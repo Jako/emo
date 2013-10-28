@@ -28,7 +28,7 @@ harvester are on the way. Unlike other obfuscation plugins, this one uses real
 encryption instead of using an out-dated and over-used hack such as hexadecimal
 or unicode encoding (not encryption) of email addresses. Also, all traces of
 href attributes as well as 'mailto:' strings and '@' characters are hidden
-from spam-bots. But it does not modify adresses inside <form> tags. So posted
+from spam-bots. But it does not modify adresses inside &lt;form&gt; tags. So posted
 and not validated forms do not break.
 
 If the 'No javascript' message contains a number, a link to a MODX resource with

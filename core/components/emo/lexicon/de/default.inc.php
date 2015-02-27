@@ -7,4 +7,4 @@
  */
 
 $_lang['emo'] = 'emo';
-$_lang['emo.no_script_message'] = 'Bitte Javasrcipt aktivieren!';
+$_lang['emo.no_script_message'] = 'Bitte Javascript aktivieren!';

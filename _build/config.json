@@ -1,0 +1,59 @@
+{
+  "name": "emo",
+  "lowCaseName": "emo",
+  "description": "E-Mail Obfuscation with Javascript",
+  "author": "Thomas Jakobi",
+  "version": "1.5.2",
+  "package": {
+    "elements": {
+      "plugins": [
+        {
+          "name": "emo",
+          "file": "emo.plugin.php",
+          "events": [
+            "OnLoadWebDocument",
+            "OnWebPagePrerender"
+          ]
+        }
+      ]
+    },
+    "systemSettings": [
+      {
+        "key": "tpl_only",
+        "type": "combo-boolean",
+        "area": "system",
+        "value": "1"
+      },
+      {
+        "key": "selection_type",
+        "area": "system",
+        "value": "exclude"
+      },
+      {
+        "key": "selection_range",
+        "area": "system",
+        "value": ""
+      },
+      {
+        "key": "js_path",
+        "area": "system",
+        "value": ""
+      },
+      {
+        "key": "css_path",
+        "area": "system",
+        "value": ""
+      },
+      {
+        "key": "no_script_message",
+        "area": "system",
+        "value": ""
+      }
+    ]
+  },
+  "build": {
+    "readme": "docs/readme.txt",
+    "license": "docs/license.txt",
+    "changelog": "docs/changelog.txt"
+  }
+}

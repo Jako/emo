@@ -41,8 +41,8 @@ MODX Package Management
 System Settings:
 --------------------------------------------------------------------------------
 
-Property          | Description | Default
------------------ | ----------- | -------
+Property          | Description                                                   | Default
+----------------- | ------------------------------------------------------------- | -------
 tpl_only          | Don't work on resources with blank template                   | Yes
 selection_type    | Selection type for enabled/disabled resources for emo         | -
 selection_range   | Comma separated list of enabled/disabled resource IDs for emo |

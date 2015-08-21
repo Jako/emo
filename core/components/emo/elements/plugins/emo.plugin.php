@@ -22,7 +22,7 @@ $modx->lexicon->load('emo:default');
 $tplOnly = (bool)$modx->getOption('emo.tplOnly', null, true);
 $selectionType = $modx->getOption('emo.selection', null, 'exclude', true);
 $selectionRange = $modx->getOption('emo.selection_range', null, '', true);
-$jsPath = $modx->getOption('emo.js_path', null, $assetsUrl . 'js/emo.js', true);
+$jsPath = $modx->getOption('emo.js_path', null, $assetsUrl . 'js/emo.min.js', true);
 $cssPath = $modx->getOption('emo.css_path', null, '', true);
 $noScriptMessage = $modx->getOption('emo.no_script_message', null, $modx->lexicon('emo.no_script_message'), true);
 

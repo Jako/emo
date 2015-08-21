@@ -1,6 +1,9 @@
 History
 ================================================================================
 
+- 1.5.3
+    - Bugfix for addLoadEvent
+    - Using Grunt uglify and cssmin
 - 1.5.2
     - Bugfix: Wrong default options
     - German and french lexicon

@@ -24,7 +24,9 @@ function addLoadEvent(func) {
             if (oldonload) {
                 oldonload();
             }
-            func();
+            if (func) {
+                func();
+            }
         };
     }
 }
@@ -44,7 +46,7 @@ function emo_replace() {
 }
 
 // Manage decryption cache
-var decryption_cache = new Array();
+var decryption_cache = [];
 function decrypt_string(n) {
     var cache_index = "'" + n + "'";
     if (decryption_cache[cache_index]) {

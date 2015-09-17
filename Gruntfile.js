@@ -1,18 +1,27 @@
 module.exports = function (grunt) {
-    var bannerContent = '/*!\n' +
-        ' * <%= pkg.name %> - <%= pkg.description %>\n' +
-        ' * Version: <%= modx.version %>\n' +
-        ' * Build date: <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-        ' */\n';
-
     // Project configuration.
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
         modx: grunt.file.readJSON('_build/config.json'),
+        banner: '/*!\n' +
+        ' * <%= modx.name %> - <%= modx.description %>\n' +
+        ' * Version: <%= modx.version %>\n' +
+        ' * Build date: <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+        ' */\n',
+        usebanner: {
+            dist: {
+                options: {
+                    position: 'top',
+                    banner: '<%= banner %>'
+                },
+                files: {
+                    src: [
+                        'assets/components/emo/js/emo.min.js',
+                        'assets/components/emo/css/emo.min.css'
+                    ]
+                }
+            }
+        },
         uglify: {
-            options: {
-                banner: bannerContent
-            },
             emo: {
                 sourceMap: true,
                 src: ['assets/components/emo/js/emo.js'],
@@ -20,10 +29,7 @@ module.exports = function (grunt) {
             }
         },
         cssmin: {
-            options: {
-                banner: bannerContent
-            },
-            target: {
+            emo: {
                 src: ['assets/components/emo/css/emo.css'],
                 dest: 'assets/components/emo/css/emo.min.css'
             }
@@ -31,11 +37,11 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: ['assets/components/emo/js/emo.js'],
-                tasks: ['uglify']
+                tasks: ['uglify', 'usebanner']
             },
             css: {
                 files: ['assets/components/emo/css/emo.css'],
-                tasks: ['cssmin']
+                tasks: ['cssmin', 'usebanner']
             }
         }
     });
@@ -44,7 +50,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-banner');
 
     //register the task
-    grunt.registerTask('default', ['uglify', 'cssmin']);
+    grunt.registerTask('default', ['uglify', 'cssmin', 'usebanner']);
 };

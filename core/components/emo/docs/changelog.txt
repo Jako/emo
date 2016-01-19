@@ -1,6 +1,8 @@
 History
 ================================================================================
 
+- 1.5.4
+    - Bugfix: Don't escape html special chars in linktext
 - 1.5.3
     - Bugfix for addLoadEvent
     - Using Grunt uglify and cssmin

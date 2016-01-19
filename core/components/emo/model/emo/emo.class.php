@@ -159,7 +159,7 @@ class Emo
         $matches[1] = preg_replace('!(.*\?(subject|body)=)([^\?]*)!ieu', "'$1'.rawurldecode(rawurlencode('$3'))", $matches[1]);
 
         // Create html of the true link
-        $trueLink = '<a class="emo_address" href="mailto:' . $matches[1] . '">' . htmlentities($matches[2], ENT_NOQUOTES, 'UTF-8') . '</a>';
+        $trueLink = '<a class="emo_address" href="mailto:' . $matches[1] . '">' . htmlspecialchars_decode(htmlentities($matches[2], ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES) . '</a>';
 
         // Did we use the same link before?
         $key = array_search($trueLink, $this->recentLinks);

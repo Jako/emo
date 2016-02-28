@@ -1,6 +1,9 @@
 History
 ================================================================================
 
+- 1.6.0
+    - Bugfix: Replace not linked email adresses
+    - Added system setting include_scripts
 - 1.5.4
     - Bugfix: Don't escape html special chars in linktext
 - 1.5.3

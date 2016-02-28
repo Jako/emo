@@ -4,7 +4,7 @@
  * emo - E-Mail Obfuscation with Javascript
  *
  * Copyright 2008-2011 by Florian Wobbe - www.eprofs.de
- * Copyright 2011-2015 by Thomas Jakobi <thomas.jakobi@partout.info>
+ * Copyright 2011-2016 by Thomas Jakobi <thomas.jakobi@partout.info>
  *
  * @package emo
  * @subpackage classfile
@@ -78,23 +78,6 @@ class Emo
         );
 
         $this->modx->lexicon->load('emo:default');
-    }
-
-    /**
-     * Create regular expression for searching email addresses.
-     * Modified from ObfuscateEmail plugin for MODX Evolution by Aloysius Lim.
-     *
-     * @access private
-     * @param void
-     * @return string Regular expression.
-     */
-    private function emailRegex()
-    {
-        $atom = "[-!#$%'*+/=?^_`{|}~0-9A-Za-z]+";
-        $email_left = $atom . '(?:\\.' . $atom . ')*';
-        $email_right = $atom . '(?:\\.' . $atom . ')+';
-        $email = $email_left . '@' . $email_right;
-        return $email;
     }
 
     /**
@@ -204,7 +187,6 @@ class Emo
      */
     public function obfuscateEmail($content)
     {
-
         // Script block header
         $this->addressesjs = "\n" . '    <!-- This script block stores the encrypted //-->' . "\n" .
             '    <!-- email address(es) in an addresses array. //-->' . "\n" .
@@ -220,6 +202,12 @@ class Emo
             $starttime = $mtime;
         }
 
+        // Plain email regular expession
+        $atom = "[-!\#$%'*+/=?^_`{|}~0-9A-Za-z]+";
+        $email_left = $atom . '(?:\\.' . $atom . ')*';
+        $email_right = $atom . '(?:\\.' . $atom . ')+';
+        $emailRegex = '#('.$email_left . '@' . $email_right .')#iu';
+
         // exclude form tags
         $splitEx = "#((?:<form).*?(?:</form>))#isu";
         $parts = preg_split($splitEx, $content, null, PREG_SPLIT_DELIM_CAPTURE);
@@ -227,7 +215,7 @@ class Emo
         foreach ($parts as $part) {
             if (substr($part, 0, 5) != '<form') {
                 $part = preg_replace_callback('#<a[^>]*mailto:([^\'"]+)[\'"][^>]*>(.*?)</a>#iu', array($this, 'encodeLink'), $part);
-                $part = preg_replace_callback('#(' . preg_quote($this->emailRegex(), '#') . ')#', array($this, 'encodeLink'), $part);
+                $part = preg_replace_callback($emailRegex, array($this, 'encodeLink'), $part);
             }
             $output .= $part;
         }

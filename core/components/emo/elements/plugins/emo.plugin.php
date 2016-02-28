@@ -22,6 +22,7 @@ $modx->lexicon->load('emo:default');
 $tplOnly = (bool)$modx->getOption('emo.tplOnly', null, true);
 $selectionType = $modx->getOption('emo.selection', null, 'exclude', true);
 $selectionRange = $modx->getOption('emo.selection_range', null, '', true);
+$includeScripts = $modx->getOption('emo.include_scripts', null, true, true);
 $jsPath = $modx->getOption('emo.js_path', null, $assetsUrl . 'js/emo.min.js', true);
 $cssPath = $modx->getOption('emo.css_path', null, '', true);
 $noScriptMessage = $modx->getOption('emo.no_script_message', null, $modx->lexicon('emo.no_script_message'), true);
@@ -41,7 +42,7 @@ if (($emoFound && ($selectionType != 'include')) || ($tplOnly && ($modx->resourc
 
 switch ($modx->event->name) {
     case 'OnLoadWebDocument': {
-        if ($jsPath != '') {
+        if ($includeScripts && $jsPath != '') {
             $modx->regClientScript($jsPath);
         }
         if ($cssPath != '') {

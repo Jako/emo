@@ -1,6 +1,6 @@
 <?php
 /**
- * Default German Lexicon Entries for emo
+ * Default Lexicon Entries for emo
  *
  * @package emo
  * @subpackage lexicon

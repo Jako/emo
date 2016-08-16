@@ -19,65 +19,96 @@ class Emo
     public $modx;
 
     /**
-     * Address counter
-     * @var int $addrCount
+     * The namespace
+     * @var string $namespace
      */
-    public $addrCount;
+    public $namespace = 'emo';
 
     /**
-     * A string of debug informations
-     * @var string $debug
+     * The version
+     * @var string $version
      */
-    public $debug;
+    public $version = '1.6.1';
 
     /**
-     * A string for storing the javascript
-     * @var string $addressesjs
-     */
-    public $addressesjs;
-
-    /**
-     * A configuration array
+     * The class config
      * @var array $config
      */
-    private $config;
-
-    /**
-     * The no script message
-     * @var string $noScriptMessage
-     */
-    private $noScriptMessage;
-
-    /**
-     * An Array for storing recent links
-     * @var array $recentLinks
-     */
-    private $recentLinks;
-
-    /**
-     * base 64 characters
-     * @var string $tab
-     */
-    private $tab;
+    public $config = array();
 
     /**
      * emo constructor
      *
      * @access public
      * @param modX $modx A reference to the modX instance.
-     * @param array $params An array of configuration options.
+     * @param array $config An config array. Optional.
      */
-    public function __construct(&$modx, $params)
+    public function __construct(modX &$modx, $config = array())
     {
         $this->modx = &$modx;
-        $this->noScriptMessage = $this->modx->getOption('noScriptMessage', $params, 'Turn on Javascript!');
-        $this->tab = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+.';
-        $this->recentLinks = array();
-        $this->config = array(
-            'show_debug' => (bool)$this->modx->getOption('show_debug', $params, false)
-        );
 
-        $this->modx->lexicon->load('emo:default');
+        $corePath = $this->getOption('core_path', $config, $this->modx->getOption('core_path') . 'components/' . $this->namespace . '/');
+        $assetsPath = $this->getOption('assets_path', $config, $this->modx->getOption('assets_path') . 'components/' . $this->namespace . '/');
+        $assetsUrl = $this->getOption('assets_url', $config, $this->modx->getOption('assets_url') . 'components/' . $this->namespace . '/');
+
+        // Load some default paths for easier management
+        $this->config = array_merge(array(
+            'namespace' => $this->namespace,
+            'version' => $this->version,
+            'corePath' => $corePath,
+            'modelPath' => $corePath . 'model/',
+            'vendorPath' => $corePath . 'vendor/',
+            'chunksPath' => $corePath . 'elements/chunks/',
+            'pagesPath' => $corePath . 'elements/pages/',
+            'snippetsPath' => $corePath . 'elements/snippets/',
+            'pluginsPath' => $corePath . 'elements/plugins/',
+            'controllersPath' => $corePath . 'controllers/',
+            'processorsPath' => $corePath . 'processors/',
+            'templatesPath' => $corePath . 'templates/',
+            'assetsPath' => $assetsPath,
+            'assetsUrl' => $assetsUrl,
+            'jsUrl' => $assetsUrl . 'js/',
+            'cssUrl' => $assetsUrl . 'css/',
+            'imagesUrl' => $assetsUrl . 'images/',
+            'connectorUrl' => $assetsUrl . 'connector.php'
+        ), $config);
+
+        // Set default options
+        $this->config = array_merge($this->config, array(
+            'noScriptMessage' => $this->getOption('noScriptMessage', $config, 'Turn on Javascript!'),
+            'show_debug' => (bool)$this->getOption('show_debug', $config, false),
+            'tab' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+.',
+            'addrCount' => 0,
+            'debug' => '',
+            'addressesjs' => '',
+            'recentLinks' => array()
+        ));
+
+        $this->modx->lexicon->load($this->namespace . ':default');
+    }
+
+    /**
+     * Get a local configuration option or a namespaced system setting by key.
+     *
+     * @param string $key The option key to search for.
+     * @param array $options An array of options that override local options.
+     * @param mixed $default The default value returned if the option is not found locally or as a
+     * namespaced system setting; by default this value is null.
+     * @return mixed The option value or the default value specified.
+     */
+    public function getOption($key, $options = array(), $default = null)
+    {
+        $option = $default;
+        if (!empty($key) && is_string($key)) {
+            if ($options != null && array_key_exists($key, $options)) {
+                $option = $options[$key];
+            } elseif (array_key_exists($key, $this->config)) {
+                $option = $this->config[$key];
+            } elseif (array_key_exists("{$this->namespace}.{$key}", $this->modx->config)) {
+                $option = $this->modx->getOption("{$this->namespace}.{$key}");
+            }
+        }
+        return $option;
     }
 
     /**
@@ -106,7 +137,7 @@ class Emo
                 $e3 = $e4 = 64;
             else if (is_nan($c3))
                 $e4 = 64;
-            $out .= $this->tab{$e1} . $this->tab{$e2} . $this->tab{$e3} . $this->tab{$e4};
+            $out .= $this->config['tab']{$e1} . $this->config['tab']{$e2} . $this->config['tab']{$e3} . $this->config['tab']{$e4};
         }
         return $out;
     }
@@ -121,16 +152,14 @@ class Emo
      */
     private function encodeLink($matches)
     {
-        // Use global variables
-
-        if (!$this->addrCount) {
+        if (!$this->config['addrCount']) {
             // Random generator seed
             mt_srand((double)microtime() * 1000000);
             // Make base 64 key
-            $this->tab = str_shuffle($this->tab);
+            $this->config['tab'] = str_shuffle($this->config['tab']);
             // Set counter and add base 64 key to array
-            $this->addrCount = 0;
-            $this->addressesjs .= '      emo_addresses[' . $this->addrCount++ . '] = "' . $this->tab . '";' . "\n";
+            $this->config['addrCount'] = 0;
+            $this->config['addressesjs'] .= '      emo_addresses[' . $this->config['addrCount']++ . '] = "' . $this->config['tab'] . '";' . "\n";
         }
 
         // Link without a linktext: insert email address as text part
@@ -138,14 +167,21 @@ class Emo
             $matches[2] = $matches[1];
         }
 
-        // urlencode a possible subject
-        $matches[1] = preg_replace('!(.*\?(subject|body)=)([^\?]*)!ieu', "'$1'.rawurldecode(rawurlencode('$3'))", $matches[1]);
+        // rawurlencode/rawurldecode a possible subject/body
+        $matches[1] = preg_replace_callback(
+            '!(.*\?(subject|body)=)([^\?]*)!iu',
+            function ($m) {
+                return $m[1] . rawurldecode(rawurlencode($m[3]));
+            }, $matches[1]
+        );
 
         // Create html of the true link
-        $trueLink = '<a class="emo_address" href="mailto:' . $matches[1] . '">' . htmlspecialchars_decode(htmlentities($matches[2], ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES) . '</a>';
+        $trueLink = '<a class="emo_address" href="mailto:' . $matches[1] . '">' .
+            htmlspecialchars_decode(htmlentities($matches[2], ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES) .
+            '</a>';
 
         // Did we use the same link before?
-        $key = array_search($trueLink, $this->recentLinks);
+        $key = array_search($trueLink, $this->config['recentLinks']);
         if ($key === false) {
             // Encrypt the complete link
             $crypted = '"' . $this->encodeBase64($trueLink) . '"';
@@ -155,24 +191,24 @@ class Emo
         }
 
         // Add encrypted address to array
-        $this->addressesjs .= '      emo_addresses[' . $this->addrCount . '] = ' . $crypted . ';' . "\n";
+        $this->config['addressesjs'] .= '      emo_addresses[' . $this->config['addrCount'] . '] = ' . $crypted . ';' . "\n";
 
         // Create html of the fake link
-        $replaceLink = '<span id="_emoaddrId' . $this->addrCount . '"><span class="emo_address">' . $this->noScriptMessage . '</span></span>';
+        $replaceLink = '<span id="_emoaddrId' . $this->config['addrCount'] . '"><span class="emo_address">' . $this->config['noScriptMessage'] . '</span></span>';
 
         // Add link to recent links array
-        array_push($this->recentLinks, $trueLink);
+        array_push($this->config['recentLinks'], $trueLink);
 
         // Debugging
         if ($this->config['show_debug']) {
-            $this->debug .= '  ' . $this->addrCount . ' ' . $matches[0] . "\n" .
+            $this->config['debug'] .= '  ' . $this->config['addrCount'] . ' ' . $matches[0] . "\n" .
                 '    ' . $matches[1] . "\n" .
                 '    ' . $matches[2] . "\n" .
                 '    ' . $crypted . "\n";
         }
 
         // Increase address counter
-        $this->addrCount++;
+        $this->config['addrCount']++;
 
         return $replaceLink;
     }
@@ -188,14 +224,14 @@ class Emo
     public function obfuscateEmail($content)
     {
         // Script block header
-        $this->addressesjs = "\n" . '    <!-- This script block stores the encrypted //-->' . "\n" .
+        $this->config['addressesjs'] = "\n" . '    <!-- This script block stores the encrypted //-->' . "\n" .
             '    <!-- email address(es) in an addresses array. //-->' . "\n" .
             '    <script type="text/javascript">' . "\n" . '    /* <![CDATA[ */' . "\n" .
             '      var emo_addresses = new Array();' . "\n";
 
         // Debugging
         if ($this->config['show_debug']) {
-            $this->debug = "\n" . '<!-- Emo debugging' . "\n";
+            $this->config['debug'] = "\n" . '<!-- Emo debugging' . "\n";
             $mtime = microtime();
             $mtime = explode(' ', $mtime);
             $mtime = $mtime[1] + $mtime[0];
@@ -206,7 +242,7 @@ class Emo
         $atom = "[-!\#$%'*+/=?^_`{|}~0-9A-Za-z]+";
         $email_left = $atom . '(?:\\.' . $atom . ')*';
         $email_right = $atom . '(?:\\.' . $atom . ')+';
-        $emailRegex = '#('.$email_left . '@' . $email_right .')#iu';
+        $emailRegex = '#(' . $email_left . '@' . $email_right . ')#iu';
 
         // exclude form tags
         $splitEx = "#((?:<form).*?(?:</form>))#isu";
@@ -221,12 +257,12 @@ class Emo
         }
 
         // Finish encrypted addresses block
-        $this->addressesjs .= '      addLoadEvent(emo_replace());' . "\n" .
+        $this->config['addressesjs'] .= '      addLoadEvent(emo_replace());' . "\n" .
             '    //-->' . "\n" .
             '    </script>' . "\n";
 
         // Maybe you want to use jQuery ...
-        // $this->addressesjs .= '     $(window).load(function(){'."\n".'        emo_replace();'."\n".'      });'."\n".'    /* ]]> */'."\n".'    </script>'."\n";
+        // $this->config['addressesjs'] .= '     $(window).load(function(){'."\n".'        emo_replace();'."\n".'      });'."\n".'    /* ]]> */'."\n".'    </script>'."\n";
         // Debugging
         if ($this->config['show_debug']) {
             $mtime = microtime();
@@ -234,13 +270,11 @@ class Emo
             $mtime = $mtime[1] + $mtime[0];
             $endtime = $mtime;
             $totaltime = ($endtime - $starttime);
-            $this->debug .= '  Email crypting took ' . $totaltime . ' seconds' . "\n\n" .
-                '  ' . implode("\n  ", $this->recentLinks) . "\n" .
+            $this->config['debug'] .= '  Email crypting took ' . $totaltime . ' seconds' . "\n\n" .
+                '  ' . implode("\n  ", $this->config['recentLinks']) . "\n" .
                 '-->';
         }
         return $output;
     }
 
 }
-
-?>

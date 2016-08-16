@@ -1,7 +1,7 @@
 /*!
  * emo - E-Mail Obfuscation with Javascript
- * Version: 1.5.3
- * Build date: 2015-08-21
+ * Version: 1.6.1
+ * Build date: 2016-08-16
  */
 
-span.emo_address,a.emo_address{color:#000;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:#888}span.emo_address:hover,a.emo_address:hover{color:#81a021;border-bottom-color:#060}
+a.emo_address,span.emo_address{color:#000;border-bottom:1px solid #888}a.emo_address:hover,span.emo_address:hover{color:#81a021;border-bottom-color:#060}

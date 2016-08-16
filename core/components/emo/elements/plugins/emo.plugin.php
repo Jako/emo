@@ -4,19 +4,18 @@
  *
  * @package emo
  * @subpackage pluginfile
+ *
+ * @var modX $modx
  */
 $corePath = $modx->getOption('emo.core_path', null, $modx->getOption('core_path') . 'components/emo/');
 $assetsUrl = $modx->getOption('emo.assets_url', null, $modx->getOption('assets_url') . 'components/emo/');
+
+/** @var Emo $emo */
+$emo = $modx->getService('emo', 'Emo', $corePath . 'model/emo/', array(
+    'core_path' => $corePath
+));
+
 $debug = $modx->getOption('emo.debug', null, false);
-if (!$modx->loadClass('emo', $corePath . 'model/emo/', true, true)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, '[emo] Could not load emo class.');
-    if ($debug) {
-        return 'Could not load emo class.';
-    } else {
-        return '';
-    }
-}
-$modx->lexicon->load('emo:default');
 
 // Get system settings
 $tplOnly = (bool)$modx->getOption('emo.tplOnly', null, true);
@@ -51,14 +50,11 @@ switch ($modx->event->name) {
         break;
     }
     case 'OnWebPagePrerender': {
-        $params = array(
-            'noScriptMessage' => $noScriptMessage,
-            'show_debug' => $debug
-        );
-        $emo = new Emo($modx, $params);
+        $emo->config['noScriptMessage'] = $noScriptMessage;
+        $emo->config['show_debug'] = $debug;
         $modx->resource->_output = $emo->obfuscateEmail($modx->resource->_output);
-        $script = $emo->addressesjs . $emo->debug;
-        if ($emo->addrCount && strpos($modx->resource->_output, $script) === false) {
+        $script = $emo->config['addressesjs'] . $emo->config['debug'];
+        if ($emo->config['addrCount'] && strpos($modx->resource->_output, $script) === false) {
             // regClientScript and replacing in resource output because regClientScript is not executed in OnWebPagePrerender, but another plugin could use it.
             $modx->regClientScript($script);
             $modx->resource->_output = preg_replace('~(</body[^>]*>)~i', $script . "\n" . '\1', $modx->resource->_output);
@@ -70,4 +66,3 @@ switch ($modx->event->name) {
     }
 }
 return;
-?>

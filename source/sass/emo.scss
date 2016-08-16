@@ -1,0 +1,10 @@
+/* Example CSS style for encrypted email links */
+
+span.emo_address, a.emo_address {
+  color: #000;
+  border-bottom: 1px solid #888;
+  &:hover {
+    color: #81a021;
+    border-bottom-color: #006600;
+  }
+}

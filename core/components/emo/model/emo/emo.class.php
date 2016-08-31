@@ -28,7 +28,7 @@ class Emo
      * The version
      * @var string $version
      */
-    public $version = '1.6.1';
+    public $version = '1.7.0';
 
     /**
      * The class config
@@ -79,8 +79,7 @@ class Emo
             'show_debug' => (bool)$this->getOption('show_debug', $config, false),
             'tab' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+.',
             'addrCount' => 0,
-            'debug' => '',
-            'addressesjs' => '',
+            'debugString' => '',
             'recentLinks' => array()
         ));
 
@@ -158,8 +157,8 @@ class Emo
             // Make base 64 key
             $this->config['tab'] = str_shuffle($this->config['tab']);
             // Set counter and add base 64 key to array
-            $this->config['addrCount'] = 0;
-            $this->config['addressesjs'] .= '      emo_addresses[' . $this->config['addrCount']++ . '] = "' . $this->config['tab'] . '";' . "\n";
+            $this->config['addrCount'] = 1;
+            $this->config['addrArray'][] = $this->config['tab'];
         }
 
         // Link without a linktext: insert email address as text part
@@ -182,26 +181,22 @@ class Emo
 
         // Did we use the same link before?
         $key = array_search($trueLink, $this->config['recentLinks']);
-        if ($key === false) {
-            // Encrypt the complete link
-            $crypted = '"' . $this->encodeBase64($trueLink) . '"';
-        } else {
-            // Use previously encrypted link
-            $crypted = 'emo_addresses[' . ($key + 1) . ']';
-        }
+
+        // Encrypt the complete link or use previously encrypted link
+        $crypted = ($key === false) ? $this->encodeBase64($trueLink) : $this->config['addrArray'][$key + 1];
 
         // Add encrypted address to array
-        $this->config['addressesjs'] .= '      emo_addresses[' . $this->config['addrCount'] . '] = ' . $crypted . ';' . "\n";
+        $this->config['addrArray'][] = $crypted;
 
         // Create html of the fake link
         $replaceLink = '<span id="_emoaddrId' . $this->config['addrCount'] . '"><span class="emo_address">' . $this->config['noScriptMessage'] . '</span></span>';
 
         // Add link to recent links array
-        array_push($this->config['recentLinks'], $trueLink);
+        $this->config['recentLinks'][] = $trueLink;
 
         // Debugging
         if ($this->config['show_debug']) {
-            $this->config['debug'] .= '  ' . $this->config['addrCount'] . ' ' . $matches[0] . "\n" .
+            $this->config['debugString'] .= '  ' . $this->config['addrCount'] . ' ' . $matches[0] . "\n" .
                 '    ' . $matches[1] . "\n" .
                 '    ' . $matches[2] . "\n" .
                 '    ' . $crypted . "\n";
@@ -223,15 +218,11 @@ class Emo
      */
     public function obfuscateEmail($content)
     {
-        // Script block header
-        $this->config['addressesjs'] = "\n" . '    <!-- This script block stores the encrypted //-->' . "\n" .
-            '    <!-- email address(es) in an addresses array. //-->' . "\n" .
-            '    <script type="text/javascript">' . "\n" . '    /* <![CDATA[ */' . "\n" .
-            '      var emo_addresses = new Array();' . "\n";
+        $this->config['addrArray'] = array();
 
         // Debugging
         if ($this->config['show_debug']) {
-            $this->config['debug'] = "\n" . '<!-- Emo debugging' . "\n";
+            $this->config['debugString'] = "\n" . '<!-- Emo debugging' . "\n";
             $mtime = microtime();
             $mtime = explode(' ', $mtime);
             $mtime = $mtime[1] + $mtime[0];
@@ -250,19 +241,32 @@ class Emo
         $output = '';
         foreach ($parts as $part) {
             if (substr($part, 0, 5) != '<form') {
-                $part = preg_replace_callback('#<a[^>]*mailto:([^\'"]+)[\'"][^>]*>(.*?)</a>#iu', array($this, 'encodeLink'), $part);
+                $part = preg_replace_callback('#<a[^>]*mailto:([^\'"]+)[\'"][^>]*>(.*?)</a>#ius', array($this, 'encodeLink'), $part);
                 $part = preg_replace_callback($emailRegex, array($this, 'encodeLink'), $part);
             }
             $output .= $part;
         }
 
-        // Finish encrypted addresses block
-        $this->config['addressesjs'] .= '      addLoadEvent(emo_replace());' . "\n" .
-            '    //-->' . "\n" .
+        // Script block
+        $this->config['addrJs'] = "\n" . '    <!-- This script block stores the encrypted -->' . "\n" .
+            '    <!-- email address(es) in an addresses array. -->' . "\n" .
+            '    <script type="text/javascript">' . "\n" .
+            '    //<![CDATA[' . "\n".
+            '      var emo_addresses = ' . json_encode($this->config['addrArray']) . "\n".
+            '      addLoadEvent(emo_replace());' . "\n" .
+            '    //]]>' . "\n" .
             '    </script>' . "\n";
 
-        // Maybe you want to use jQuery ...
-        // $this->config['addressesjs'] .= '     $(window).load(function(){'."\n".'        emo_replace();'."\n".'      });'."\n".'    /* ]]> */'."\n".'    </script>'."\n";
+//        Maybe you want to use jQuery ...
+//        $this->config['addrJs'] = "\n" . '    <!-- This script block stores the encrypted -->' . "\n" .
+//            '    <!-- email address(es) in an addresses array. -->' . "\n" .
+//            '    <script type="text/javascript">' . "\n" .
+//            '    //<![CDATA[' . "\n".
+//            '      var emo_addresses = ' . json_encode($this->config['addrArray']) . "\n".
+//            '      $(window).load(function(){emo_replace();});' . "\n" .
+//            '    //]]>' . "\n" .
+//            '    </script>' . "\n";
+
         // Debugging
         if ($this->config['show_debug']) {
             $mtime = microtime();
@@ -270,7 +274,7 @@ class Emo
             $mtime = $mtime[1] + $mtime[0];
             $endtime = $mtime;
             $totaltime = ($endtime - $starttime);
-            $this->config['debug'] .= '  Email crypting took ' . $totaltime . ' seconds' . "\n\n" .
+            $this->config['debugString'] .= '  Email crypting took ' . $totaltime . ' seconds' . "\n\n" .
                 '  ' . implode("\n  ", $this->config['recentLinks']) . "\n" .
                 '-->';
         }

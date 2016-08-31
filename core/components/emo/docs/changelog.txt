@@ -1,6 +1,9 @@
 History
 ================================================================================
 
+- 1.7.0
+    - Output the addresses as JSON encoded array
+    - The MODX placeholder 'emo_addresses' contains the JSON encoded array too
 - 1.6.1
     - Bugfix: Parse error in PHP 7
 - 1.6.0

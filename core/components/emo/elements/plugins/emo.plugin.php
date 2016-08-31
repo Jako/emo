@@ -15,16 +15,17 @@ $emo = $modx->getService('emo', 'Emo', $corePath . 'model/emo/', array(
     'core_path' => $corePath
 ));
 
-$debug = $modx->getOption('emo.debug', null, false);
-
 // Get system settings
-$tplOnly = (bool)$modx->getOption('emo.tplOnly', null, true);
-$selectionType = $modx->getOption('emo.selection', null, 'exclude', true);
-$selectionRange = $modx->getOption('emo.selection_range', null, '', true);
-$includeScripts = $modx->getOption('emo.include_scripts', null, true, true);
-$jsPath = $modx->getOption('emo.js_path', null, $assetsUrl . 'js/emo.min.js', true);
-$cssPath = $modx->getOption('emo.css_path', null, '', true);
-$noScriptMessage = $modx->getOption('emo.no_script_message', null, $modx->lexicon('emo.no_script_message'), true);
+$tplOnly = (bool)$emo->getOption('tplOnly', null, true);
+$selectionType = $emo->getOption('selection', null, 'exclude');
+$selectionRange = $emo->getOption('selection_range');
+$includeScripts = $emo->getOption('include_scripts', null, true);
+$jsUrl = $emo->getOption('js_path');
+$jsUrl = ($jsUrl) ? $jsUrl : $assetsUrl . 'js/emo.min.js';
+$cssUrl = $emo->getOption('css_path');
+$debug = $emo->getOption('debug', null, false);
+$noScriptMessage = $emo->getOption('no_script_message');
+$noScriptMessage = ($noScriptMessage !== '') ? $noScriptMessage : $modx->lexicon('emo.no_script_message');
 
 // Generate noScriptMessage as link if it is
 if (is_numeric($noScriptMessage)) {
@@ -41,11 +42,15 @@ if (($emoFound && ($selectionType != 'include')) || ($tplOnly && ($modx->resourc
 
 switch ($modx->event->name) {
     case 'OnLoadWebDocument': {
-        if ($includeScripts && $jsPath != '') {
-            $modx->regClientScript($jsPath);
+        if ($includeScripts) {
+            if ($debug && $emo->getOption('assetsUrl') != MODX_ASSETS_URL . 'components/emo/') {
+                $modx->regClientScript($emo->getOption('assetsUrl') . '../../../source/js/emo.js');
+            } else {
+                $modx->regClientScript($jsUrl);
+            }
         }
-        if ($cssPath != '') {
-            $modx->regClientCSS($cssPath);
+        if ($cssUrl != '') {
+            $modx->regClientCSS($cssUrl);
         }
         break;
     }
@@ -53,9 +58,10 @@ switch ($modx->event->name) {
         $emo->config['noScriptMessage'] = $noScriptMessage;
         $emo->config['show_debug'] = $debug;
         $modx->resource->_output = $emo->obfuscateEmail($modx->resource->_output);
-        $script = $emo->config['addressesjs'] . $emo->config['debug'];
+        $script = $emo->config['addrJs'] . $emo->config['debugString'];
         if ($emo->config['addrCount'] && strpos($modx->resource->_output, $script) === false) {
             // regClientScript and replacing in resource output because regClientScript is not executed in OnWebPagePrerender, but another plugin could use it.
+            $modx->setPlaceholder('emo_addresses', $emo->config['addrArray']);
             $modx->regClientScript($script);
             $modx->resource->_output = preg_replace('~(</body[^>]*>)~i', $script . "\n" . '\1', $modx->resource->_output);
         }

@@ -1,5 +1,5 @@
 emo
-================================================================================
+===
 
 E-Mail Obfuscation with Javascript for the MODX Revolution content management
 framework
@@ -10,7 +10,8 @@ Javascript decryption routines are triggered by the browser on 'window.onload'
 event and replace the span elements with the real email addresses.
 
 Features:
---------------------------------------------------------------------------------
+---------
+
 This plugin searches for 'mailto:' strings in href attributes and all plain text
 email addresses in the html output. However, only email addresses like
 'user@host.com' are matched whereas 'Tog@ther' is left untouched.
@@ -35,11 +36,12 @@ If the 'No javascript' message contains a number, a link to a MODX resource with
 that ID is generated. This could i.e. point to a resouce with a contact form.
 
 Installation:
---------------------------------------------------------------------------------
+-------------
+
 MODX Package Management
 
 System Settings:
---------------------------------------------------------------------------------
+----------------
 
 Property | Description | Default
 ---- | ----------- | -------

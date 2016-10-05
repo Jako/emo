@@ -71,7 +71,7 @@ module.exports = function (grunt) {
                     srcBasePath: 'develop/emo/',
                     host: '<%= sshconfig.host %>',
                     username: '<%= sshconfig.username %>',
-                    privateKey: grunt.file.read("/Users/jako/.ssh/id_dsa"),
+                    privateKey: '<%= sshconfig.privateKey %>',
                     passphrase: '<%= sshconfig.passphrase %>',
                     showProgress: true
                 }
@@ -85,7 +85,7 @@ module.exports = function (grunt) {
                     srcBasePath: 'develop/emo/',
                     host: '<%= sshconfig.host %>',
                     username: '<%= sshconfig.username %>',
-                    privateKey: grunt.file.read("/Users/jako/.ssh/id_dsa"),
+                    privateKey: '<%= sshconfig.privateKey %>',
                     passphrase: '<%= sshconfig.passphrase %>',
                     showProgress: true
                 }

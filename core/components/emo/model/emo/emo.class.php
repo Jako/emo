@@ -229,9 +229,6 @@ class Emo
             $starttime = $mtime;
         }
 
-        // Plain email regular expession
-        $emailRegex = '/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/';
-
         // exclude form tags
         $splitEx = "#((?:<form).*?(?:</form>))#isu";
         $parts = preg_split($splitEx, $content, null, PREG_SPLIT_DELIM_CAPTURE);
@@ -239,7 +236,7 @@ class Emo
         foreach ($parts as $part) {
             if (substr($part, 0, 5) != '<form') {
                 $part = preg_replace_callback('#<a[^>]*mailto:([^\'"]+)[\'"][^>]*>(.*?)</a>#ius', array($this, 'encodeLink'), $part);
-                $part = preg_replace_callback($emailRegex, array($this, 'encodeLink'), $part);
+                $part = preg_replace_callback('#([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})#iu', array($this, 'encodeLink'), $part);
             }
             $output .= $part;
         }

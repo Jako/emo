@@ -17,7 +17,7 @@ $emo = $modx->getService('emo', 'Emo', $corePath . 'model/emo/', array(
 
 // Get system settings
 $tplOnly = (bool)$emo->getOption('tplOnly', null, true);
-$selectionType = $emo->getOption('selection', null, 'exclude');
+$selectionType = $emo->getOption('selection_type', null, 'exclude');
 $selectionRange = $emo->getOption('selection_range');
 $includeScripts = $emo->getOption('include_scripts', null, true);
 $jsUrl = $emo->getOption('js_path');
@@ -36,7 +36,7 @@ if (is_numeric($noScriptMessage)) {
 // Stop plugin on selection range and selection type
 $selectionRange = explode(',', str_replace(' ', '', $selectionRange));
 $emoFound = in_array($modx->resource->get('id'), $selectionRange);
-if (($emoFound && ($selectionType != 'include')) || ($tplOnly && ($modx->resource->get('template') == 0))) {
+if (($emoFound && ($selectionType == 'exclude')) || (!$emoFound && ($selectionType == 'include')) || ($tplOnly && ($modx->resource->get('template') == 0))) {
     return;
 }
 

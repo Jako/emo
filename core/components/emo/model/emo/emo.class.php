@@ -230,10 +230,7 @@ class Emo
         }
 
         // Plain email regular expession
-        $atom = "[-!\#$%'*+/=?^_`{|}~0-9A-Za-z]+";
-        $email_left = $atom . '(?:\\.' . $atom . ')*';
-        $email_right = $atom . '(?:\\.' . $atom . ')+';
-        $emailRegex = '#(' . $email_left . '@' . $email_right . ')#iu';
+        $emailRegex = '/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})/';
 
         // exclude form tags
         $splitEx = "#((?:<form).*?(?:</form>))#isu";

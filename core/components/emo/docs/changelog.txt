@@ -1,6 +1,10 @@
 History
 ================================================================================
 
+- 1.7.1
+    - Improved email regular expression (thanks to @davidpede)
+    - Fix for 'selection_type' system setting (thanks to @davidpede)
+    - Plugin event code refactored
 - 1.7.0
     - Output the addresses as JSON encoded array
     - The MODX placeholder 'emo_addresses' contains the JSON encoded array too

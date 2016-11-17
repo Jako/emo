@@ -1,6 +1,8 @@
 History
 ================================================================================
 
+- 1.7.2
+    - Restore accidentally removed selection range and selection type code
 - 1.7.1
     - Improved email regular expression (thanks to @davidpede)
     - Fix for 'selection_type' system setting (thanks to @davidpede)

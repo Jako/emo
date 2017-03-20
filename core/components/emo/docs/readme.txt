@@ -1,5 +1,5 @@
 emo
-================================================================================
+===
 
 E-Mail Obfuscation with Javascript for the MODX Revolution content management
 framework

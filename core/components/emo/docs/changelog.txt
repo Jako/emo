@@ -1,5 +1,5 @@
-History
-================================================================================
+Changelog for emo
+=================
 
 - 1.7.2
     - Restore accidentally removed selection range and selection type code

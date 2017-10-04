@@ -1,13 +1,16 @@
 <?php
 /**
- * ResSaveSort
+ * Emo Plugin
  *
  * @package emo
- * @subpackage plugin
+ * @subpackage pluginfile
  *
  * @var modX $modx
  * @var array $scriptProperties
  */
+
+$className = 'Emo' . $modx->event->name;
+
 $corePath = $modx->getOption('emo.core_path', null, $modx->getOption('core_path') . 'components/emo/');
 /** @var Emo $emo */
 $emo = $modx->getService('emo', 'Emo', $corePath . 'model/emo/', array(
@@ -26,7 +29,6 @@ if (($emoFound && ($selectionType == 'exclude')) || (!$emoFound && ($selectionTy
     return;
 }
 
-$className = 'Emo' . $modx->event->name;
 $modx->loadClass('EmoPlugin', $emo->getOption('modelPath') . 'emo/events/', true, true);
 $modx->loadClass($className, $emo->getOption('modelPath') . 'emo/events/', true, true);
 if (class_exists($className)) {

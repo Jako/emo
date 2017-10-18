@@ -1,10 +1,10 @@
-site_name: DaterangeTV
-docs_dir: core/components/daterangetv/docs/mkdocs
+site_name: emo
+docs_dir: core/components/emo/docs/mkdocs
 site_dir: _build/site
-edit_uri: tree/master/core/components/daterangetv/docs/mkdocs
+edit_uri: tree/master/core/components/emo/docs/mkdocs
 
-repo_name: 'Jako/DaterangeTV'
-repo_url: https://github.com/Jako/DaterangeTV
+repo_name: 'Jako/emo-revo'
+repo_url: https://github.com/Jako/emo-revo
 
 copyright: '&copy; 2011-2017 <a href="https://treehillstudio.com">Treehill Studio</a>'
 
@@ -20,7 +20,7 @@ extra:
     heading: 'Ubuntu'
 
 piwik_analytics:
-  site_id: 17
+  site_id: 24
   piwik_url: 'https://piwik.partout.info/'
 
 theme: 'material'

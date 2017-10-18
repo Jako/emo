@@ -1,6 +1,9 @@
 Changelog for emo
 =================
 
+- 1.8.0
+    - Exclude sections between '<!-- emo-exclude -->' and
+      '<!-- /emo-exclude -->' from replacement
 - 1.7.2
     - Restore accidentally removed selection range and selection type code
 - 1.7.1

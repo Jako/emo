@@ -4,7 +4,7 @@
  * emo - E-Mail Obfuscation with Javascript
  *
  * Copyright 2008-2011 by Florian Wobbe - www.eprofs.de
- * Copyright 2011-2016 by Thomas Jakobi <thomas.jakobi@partout.info>
+ * Copyright 2011-2017 by Thomas Jakobi <thomas.jakobi@partout.info>
  *
  * @package emo
  * @subpackage classfile
@@ -28,7 +28,7 @@ class Emo
      * The version
      * @var string $version
      */
-    public $version = '1.7.2';
+    public $version = '1.8.0';
 
     /**
      * The class config
@@ -124,18 +124,23 @@ class Emo
         for ($i = 0; $i < strlen($data);) {
             $c1 = ord($data{$i++});
             $c2 = $c3 = null;
-            if ($i < strlen($data))
+            if ($i < strlen($data)) {
                 $c2 = ord($data{$i++});
-            if ($i < strlen($data))
+            }
+            if ($i < strlen($data)) {
                 $c3 = ord($data{$i++});
+            }
             $e1 = $c1 >> 2;
             $e2 = (($c1 & 3) << 4) + ($c2 >> 4);
             $e3 = (($c2 & 15) << 2) + ($c3 >> 6);
             $e4 = $c3 & 63;
-            if (is_nan($c2))
+            if (is_nan($c2)) {
                 $e3 = $e4 = 64;
-            else if (is_nan($c3))
-                $e4 = 64;
+            } else {
+                if (is_nan($c3)) {
+                    $e4 = 64;
+                }
+            }
             $out .= $this->config['tab']{$e1} . $this->config['tab']{$e2} . $this->config['tab']{$e3} . $this->config['tab']{$e4};
         }
         return $out;
@@ -230,23 +235,24 @@ class Emo
         }
 
         // exclude form tags
-        $splitEx = "#((?:<form).*?(?:</form>))#isu";
+        $splitEx = "#((?:<form|<!-- emo-exclude -->).*?(?:</form>|<!-- /emo-exclude -->))#ius";
         $parts = preg_split($splitEx, $content, null, PREG_SPLIT_DELIM_CAPTURE);
         $output = '';
         foreach ($parts as $part) {
-            if (substr($part, 0, 5) != '<form') {
+            if (substr($part, 0, strlen('<form')) != '<form' && substr($part, 0, strlen('<!-- emo-exclude -->')) != '<!-- emo-exclude -->') {
                 $part = preg_replace_callback('#<a[^>]*mailto:([^\'"]+)[\'"][^>]*>(.*?)</a>#ius', array($this, 'encodeLink'), $part);
                 $part = preg_replace_callback('#([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})#iu', array($this, 'encodeLink'), $part);
             }
             $output .= $part;
         }
+        $output = str_replace(array('<!-- emo-exclude -->', '<!-- /emo-exclude -->'), '', $output);
 
         // Script block
         $this->config['addrJs'] = "\n" . '    <!-- This script block stores the encrypted -->' . "\n" .
             '    <!-- email address(es) in an addresses array. -->' . "\n" .
             '    <script type="text/javascript">' . "\n" .
-            '    //<![CDATA[' . "\n".
-            '      var emo_addresses = ' . json_encode($this->config['addrArray']) . "\n".
+            '    //<![CDATA[' . "\n" .
+            '      var emo_addresses = ' . json_encode($this->config['addrArray']) . "\n" .
             '      addLoadEvent(emo_replace());' . "\n" .
             '    //]]>' . "\n" .
             '    </script>' . "\n";

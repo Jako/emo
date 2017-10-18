@@ -1,0 +1,69 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "emo\n\n\nemo is an email obfuscation plugin for MODX Revolution.\n\n\nRequirements\n\n\n\n\nMODX Revolution 2.2.4+\n\n\nPHP v5.3+\n\n\n\n\nFeatures\n\n\n\n\nReplace all plaintext emails and email links with span elements.\n\n\nEncrypt the email addresses and store them in javascript variables.\n\n\nDecrypt the email adresses by the browser on 'window.onload'.", 
+            "title": "Description"
+        }, 
+        {
+            "location": "/#emo", 
+            "text": "emo is an email obfuscation plugin for MODX Revolution.", 
+            "title": "emo"
+        }, 
+        {
+            "location": "/#requirements", 
+            "text": "MODX Revolution 2.2.4+  PHP v5.3+", 
+            "title": "Requirements"
+        }, 
+        {
+            "location": "/#features", 
+            "text": "Replace all plaintext emails and email links with span elements.  Encrypt the email addresses and store them in javascript variables.  Decrypt the email adresses by the browser on 'window.onload'.", 
+            "title": "Features"
+        }, 
+        {
+            "location": "/installation/", 
+            "text": "Install from MODX Extras\n\n\nSearch for emo in the Package Manager of your MODX installation and\ninstall it in there.\n\n\nManual installation\n\n\nIf you can't access the MODX Extras Repository in your MODX installation, you\ncan manually install emo.\n\n\n\n\nDownload the transport package from \nMODX Extras\n (or one of the pre built transport packages in \n_packages\n)\n\n\nUpload the zip file to your MODX installation's \ncore/packages\n folder.\n\n\nIn the MODX Manager, navigate to the Package Manager page, and select 'Search locally for packages' from the dropdown button.\n\n\nemo should now show up in the list of available packages. Click the corresponding 'Install' button and follow instructions to complete the installation.\n\n\n\n\nBuild it from source\n\n\nTo build and install the package from source you could use \nGit Package\nManagement\n. The GitHub\nrepository of emo contains a\n\nconfig.json\n\nto build that package locally. Use this option, if you want to debug emo\nand/or contribute bugfixes and enhancements.", 
+            "title": "Installation"
+        }, 
+        {
+            "location": "/installation/#install-from-modx-extras", 
+            "text": "Search for emo in the Package Manager of your MODX installation and\ninstall it in there.", 
+            "title": "Install from MODX Extras"
+        }, 
+        {
+            "location": "/installation/#manual-installation", 
+            "text": "If you can't access the MODX Extras Repository in your MODX installation, you\ncan manually install emo.   Download the transport package from  MODX Extras  (or one of the pre built transport packages in  _packages )  Upload the zip file to your MODX installation's  core/packages  folder.  In the MODX Manager, navigate to the Package Manager page, and select 'Search locally for packages' from the dropdown button.  emo should now show up in the list of available packages. Click the corresponding 'Install' button and follow instructions to complete the installation.", 
+            "title": "Manual installation"
+        }, 
+        {
+            "location": "/installation/#build-it-from-source", 
+            "text": "To build and install the package from source you could use  Git Package\nManagement . The GitHub\nrepository of emo contains a config.json \nto build that package locally. Use this option, if you want to debug emo\nand/or contribute bugfixes and enhancements.", 
+            "title": "Build it from source"
+        }, 
+        {
+            "location": "/usage/", 
+            "text": "How it works\n\n\nThis plugin searches for 'mailto:' strings in href attributes and all plain text\nemail addresses in the html output. However, only email addresses like\n'user@host.com' are matched whereas 'Tog@ther' is left untouched.\n\n\nMatches of all plaintext emails and email links are consequently replaced with\nspan elements only containing a note to turn on javascript. Then email addresses\nand original link text are encrypted and stored in javascript variables.\nDecryption routines triggered by the browser on 'window.onload' event are\nlocated in the script file 'emo.js'. Optionally, CSS class 'emo_address' can be\nused to configure the appearance of email links.\n\n\nIt is still believed that hexadecimal or unicode encoding will stop spam-bots\nbeing able to find your email address. Nevertheless, encoded email address\nharvester are on the way. Unlike other obfuscation plugins, this one uses real\nencryption instead of using an out-dated and over-used hack such as hexadecimal\nor unicode encoding (not encryption) of email addresses. Also, all traces of\nhref attributes as well as 'mailto:' strings and '@' characters are hidden from\nspam-bots.\n\n\nThe plugin does not modify adresses inside \n tags. So posted and not\nvalidated forms do not break. Sections between  '\n' and\n'\n' are excluded from replacement.\n\n\nIf the 'No javascript' message contains a number, a link to a MODX resource with\nthat ID is generated. This could i.e. point to a resouce with a contact form.\n\n\nSystem Settings\n\n\nemo uses the following system settings in the namespace \nemo\n:\n\n\n\n\n\n\n\n\nProperty\n\n\nDescription\n\n\nDefault\n\n\n\n\n\n\n\n\n\n\ntpl_only\n\n\nDon't work on resources with blank template\n\n\nYes\n\n\n\n\n\n\nselection_type\n\n\nSelection type for enabled/disabled resources for emo\n\n\n-\n\n\n\n\n\n\nselection_range\n\n\nComma separated list of enabled/disabled resource IDs for emo\n\n\n\n\n\n\n\n\njs_path\n\n\nPath to emo javascript\n\n\n/assets/components/emo/js/emo.min.js\n\n\n\n\n\n\ncss_path\n\n\nPath to emo css\n\n\n\n\n\n\n\n\nno_script_message\n\n\n'No javascript' message (Resource ID for internal link)\n\n\nTurn on JavaScript!", 
+            "title": "Usage"
+        }, 
+        {
+            "location": "/usage/#how-it-works", 
+            "text": "This plugin searches for 'mailto:' strings in href attributes and all plain text\nemail addresses in the html output. However, only email addresses like\n'user@host.com' are matched whereas 'Tog@ther' is left untouched.  Matches of all plaintext emails and email links are consequently replaced with\nspan elements only containing a note to turn on javascript. Then email addresses\nand original link text are encrypted and stored in javascript variables.\nDecryption routines triggered by the browser on 'window.onload' event are\nlocated in the script file 'emo.js'. Optionally, CSS class 'emo_address' can be\nused to configure the appearance of email links.  It is still believed that hexadecimal or unicode encoding will stop spam-bots\nbeing able to find your email address. Nevertheless, encoded email address\nharvester are on the way. Unlike other obfuscation plugins, this one uses real\nencryption instead of using an out-dated and over-used hack such as hexadecimal\nor unicode encoding (not encryption) of email addresses. Also, all traces of\nhref attributes as well as 'mailto:' strings and '@' characters are hidden from\nspam-bots.  The plugin does not modify adresses inside   tags. So posted and not\nvalidated forms do not break. Sections between  ' ' and\n' ' are excluded from replacement.  If the 'No javascript' message contains a number, a link to a MODX resource with\nthat ID is generated. This could i.e. point to a resouce with a contact form.", 
+            "title": "How it works"
+        }, 
+        {
+            "location": "/usage/#system-settings", 
+            "text": "emo uses the following system settings in the namespace  emo :     Property  Description  Default      tpl_only  Don't work on resources with blank template  Yes    selection_type  Selection type for enabled/disabled resources for emo  -    selection_range  Comma separated list of enabled/disabled resource IDs for emo     js_path  Path to emo javascript  /assets/components/emo/js/emo.min.js    css_path  Path to emo css     no_script_message  'No javascript' message (Resource ID for internal link)  Turn on JavaScript!", 
+            "title": "System Settings"
+        }, 
+        {
+            "location": "/donate/", 
+            "text": "Support emo\n\n\nemo\n is and always will be free and open-source, but it still requires many man-hours of development, \nbug-fixing, support in MODX forums and on GitHub between the releases.\n\n\nPlease support the ongoing and past development of \nemo\n by making a donation below.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nemo\n development is sponsored by Treehillstudio \u2013 MODX Development in M\u00fcnsterland.", 
+            "title": "Donate"
+        }, 
+        {
+            "location": "/donate/#support-emo", 
+            "text": "emo  is and always will be free and open-source, but it still requires many man-hours of development, \nbug-fixing, support in MODX forums and on GitHub between the releases.  Please support the ongoing and past development of  emo  by making a donation below.           emo  development is sponsored by Treehillstudio \u2013 MODX Development in M\u00fcnsterland.", 
+            "title": "Support emo"
+        }
+    ]
+}

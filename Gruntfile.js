@@ -10,7 +10,7 @@ module.exports = function (grunt) {
         usebanner: {
             css: {
                 options: {
-                    position: 'top',
+                    position: 'bottom',
                     banner: '<%= banner %>'
                 },
                 files: {
@@ -32,7 +32,7 @@ module.exports = function (grunt) {
             }
         },
         uglify: {
-            emo: {
+            web: {
                 src: [
                     'source/js/emo.js'
                 ],
@@ -44,14 +44,29 @@ module.exports = function (grunt) {
                 outputStyle: 'expanded',
                 sourcemap: false
             },
-            dist: {
+            web: {
                 files: {
                     'source/css/emo.css': 'source/sass/emo.scss'
                 }
             }
         },
+        postcss: {
+            options: {
+                processors: [
+                    require('pixrem')(),
+                    require('autoprefixer')({
+                        browsers: 'last 2 versions, ie >= 8'
+                    })
+                ]
+            },
+            web: {
+                src: [
+                    'source/css/web/ajaxupload.css'
+                ]
+            }
+        },
         cssmin: {
-            emo: {
+            web: {
                 src: [
                     'source/css/emo.css'
                 ],
@@ -69,7 +84,7 @@ module.exports = function (grunt) {
                 files: [
                     'source/**/*.scss'
                 ],
-                tasks: ['sass', 'cssmin', 'usebanner:css']
+                tasks: ['sass', 'postcss', 'cssmin', 'usebanner:css']
             },
             config: {
                 files: [
@@ -86,7 +101,7 @@ module.exports = function (grunt) {
                 }],
                 options: {
                     replacements: [{
-                        pattern: /Copyright 2011(-\d{4})? by/g,
+                        pattern: /Copyright \d{4}(-\d{4})? by/g,
                         replacement: 'Copyright ' + (new Date().getFullYear() > 2011 ? '2011-' : '') + new Date().getFullYear() + ' by'
                     }]
                 }
@@ -129,5 +144,5 @@ module.exports = function (grunt) {
     grunt.renameTask('string-replace', 'bump');
 
     //register the task
-    grunt.registerTask('default', ['bump', 'uglify', 'sass', 'cssmin', 'usebanner']);
+    grunt.registerTask('default', ['bump', 'uglify', 'sass', 'postcss', 'cssmin', 'usebanner']);
 };

@@ -28,7 +28,7 @@ class Emo
      * The version
      * @var string $version
      */
-    public $version = '1.8.0';
+    public $version = '1.8.1';
 
     /**
      * The class config

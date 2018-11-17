@@ -3,7 +3,7 @@
  * Emo Plugin
  *
  * @package emo
- * @subpackage pluginfile
+ * @subpackage plugin
  *
  * @var modX $modx
  * @var array $scriptProperties

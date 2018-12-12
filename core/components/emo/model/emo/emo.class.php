@@ -234,7 +234,7 @@ class Emo
             $starttime = $mtime;
         }
 
-        // exclude form tags
+        // exclude form and emo-exclude tags
         $splitEx = "#((?:<form|<!-- emo-exclude -->).*?(?:</form>|<!-- /emo-exclude -->))#ius";
         $parts = preg_split($splitEx, $content, null, PREG_SPLIT_DELIM_CAPTURE);
         $output = '';

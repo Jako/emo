@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "emo\n\n\nemo is an email obfuscation plugin for MODX Revolution.\n\n\nRequirements\n\n\n\n\nMODX Revolution 2.2.4+\n\n\nPHP v5.3+\n\n\n\n\nFeatures\n\n\n\n\nReplace all plaintext emails and email links with span elements.\n\n\nEncrypt the email addresses and store them in javascript variables.\n\n\nDecrypt the email adresses by the browser on 'window.onload'.", 
+            "text": "emo\n\n\nemo is an email obfuscation plugin for MODX Revolution.\n\n\nRequirements\n\n\n\n\nMODX Revolution 2.6+\n\n\nPHP v5.6+\n\n\n\n\nFeatures\n\n\n\n\nReplace all plaintext emails and email links with span elements.\n\n\nEncrypt the email addresses and store them in javascript variables.\n\n\nDecrypt the email adresses by the browser on 'window.onload'.", 
             "title": "Description"
         }, 
         {
@@ -12,7 +12,7 @@
         }, 
         {
             "location": "/#requirements", 
-            "text": "MODX Revolution 2.2.4+  PHP v5.3+", 
+            "text": "MODX Revolution 2.6+  PHP v5.6+", 
             "title": "Requirements"
         }, 
         {

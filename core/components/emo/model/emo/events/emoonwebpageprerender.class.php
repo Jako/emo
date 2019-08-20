@@ -1,9 +1,9 @@
 <?php
-
 /**
  * @package emo
  * @subpackage plugin
  */
+
 class EmoOnWebPagePrerender extends EmoPlugin
 {
     public function run()
@@ -16,14 +16,14 @@ class EmoOnWebPagePrerender extends EmoPlugin
             $noScriptMessage = '<a href="' . $this->modx->makeUrl($noScriptMessage, '', '', 'abs') . '">' . $noScriptResource->get('pagetitle') . '</a>';
         }
 
-        $this->emo->config['noScriptMessage'] = $noScriptMessage;
-        $this->emo->config['show_debug'] = $this->emo->getOption('debug', null, false);
+        $this->emo->options['noScriptMessage'] = $noScriptMessage;
+        $this->emo->options['show_debug'] = $this->emo->getOption('debug', null, false);
         $this->modx->resource->_output = $this->emo->obfuscateEmail($this->modx->resource->_output);
 
-        $script = $this->emo->config['addrJs'] . $this->emo->config['debugString'];
+        $script = $this->emo->options['addrJs'] . $this->emo->options['debugString'];
 
-        if ($this->emo->config['addrCount'] && strpos($this->modx->resource->_output, $script) === false) {
-            $this->modx->setPlaceholder('emo_addresses', $this->emo->config['addrArray']);
+        if ($this->emo->options['addrCount'] && strpos($this->modx->resource->_output, $script) === false) {
+            $this->modx->setPlaceholder('emo_addresses', $this->emo->options['addrArray']);
             // regClientScript and replacing in resource output because regClientScript is not executed in OnWebPagePrerender, but another plugin could use it.
             $this->modx->regClientScript($script);
             $this->modx->resource->_output = preg_replace('~(</body[^>]*>)~i', $script . "\n" . '\1', $this->modx->resource->_output);

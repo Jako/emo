@@ -4,8 +4,8 @@ emo is an email obfuscation plugin for MODX Revolution.
 
 ### Requirements
 
-* MODX Revolution 2.2.4+
-* PHP v5.3+
+* MODX Revolution 2.6+
+* PHP v5.6+
 
 ### Features
 

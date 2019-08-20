@@ -6,12 +6,13 @@ edit_uri: tree/master/docs
 repo_name: 'Jako/emo-revo'
 repo_url: https://github.com/Jako/emo-revo
 
-copyright: '&copy; 2011-2018 <a href="https://treehillstudio.com">Treehill Studio</a>'
+copyright: '&copy; 2011-2019 <a href="https://treehillstudio.com">Treehill Studio</a>'
 
 pages:
 - Description: 'index.md'
 - Installation: 'installation.md'
 - Usage: 'usage.md'
+- Contributors: 'contributors.md'
 - Donate: 'donate.md'
 
 extra:

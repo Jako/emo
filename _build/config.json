@@ -3,13 +3,14 @@
   "lowCaseName": "emo",
   "description": "E-Mail Obfuscation with Javascript",
   "author": "Thomas Jakobi",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "package": {
     "elements": {
       "plugins": [
         {
           "name": "emo",
           "file": "emo.plugin.php",
+          "description": "emo E-Mail Obfuscation plugin",
           "events": [
             "OnLoadWebDocument",
             "OnWebPagePrerender"
@@ -63,9 +64,27 @@
       }
     ]
   },
+  "dependencies": [
+    {
+      "name": "php",
+      "version": ">=5.6"
+    },
+    {
+      "name": "modx",
+      "version": ">=2.6"
+    }
+  ],
   "build": {
     "readme": "docs/readme.md",
     "license": "docs/license.md",
-    "changelog": "docs/changelog.md"
+    "changelog": "docs/changelog.md",
+    "setupOptions": {
+      "source": "setup.options.php"
+    },
+    "resolver": {
+      "after": [
+        "resolve.treehillstudio.php"
+      ]
+    }
   }
 }

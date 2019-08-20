@@ -1,17 +1,19 @@
 <?php
-
 /**
  * emo - E-Mail Obfuscation with Javascript
  *
- * Copyright 2011-2018 by Florian Wobbe - www.eprofs.de
- * Copyright 2011-2018 by Thomas Jakobi <thomas.jakobi@partout.info>
+ * Copyright 2011-2019 by Florian Wobbe - www.eprofs.de
+ * Copyright 2011-2019 by Thomas Jakobi <thomas.jakobi@partout.info>
  *
  * @package emo
  * @subpackage classfile
  */
+
+/**
+ * class Emo
+ */
 class Emo
 {
-
     /**
      * A reference to the modX instance
      * @var modX $modx
@@ -28,31 +30,31 @@ class Emo
      * The version
      * @var string $version
      */
-    public $version = '1.8.1';
+    public $version = '1.8.2';
 
     /**
-     * The class config
-     * @var array $config
+     * The class options
+     * @var array $options
      */
-    public $config = array();
+    public $options = array();
 
     /**
      * emo constructor
      *
-     * @access public
      * @param modX $modx A reference to the modX instance.
-     * @param array $config An config array. Optional.
+     * @param array $options An array of options. Optional.
      */
-    public function __construct(modX &$modx, $config = array())
+    public function __construct(modX &$modx, $options = array())
     {
         $this->modx = &$modx;
+        $this->namespace = $this->getOption('namespace', $options, $this->namespace);
 
-        $corePath = $this->getOption('core_path', $config, $this->modx->getOption('core_path') . 'components/' . $this->namespace . '/');
-        $assetsPath = $this->getOption('assets_path', $config, $this->modx->getOption('assets_path') . 'components/' . $this->namespace . '/');
-        $assetsUrl = $this->getOption('assets_url', $config, $this->modx->getOption('assets_url') . 'components/' . $this->namespace . '/');
+        $corePath = $this->getOption('core_path', $options, $this->modx->getOption('core_path') . 'components/' . $this->namespace . '/');
+        $assetsPath = $this->getOption('assets_path', $options, $this->modx->getOption('assets_path') . 'components/' . $this->namespace . '/');
+        $assetsUrl = $this->getOption('assets_url', $options, $this->modx->getOption('assets_url') . 'components/' . $this->namespace . '/');
 
         // Load some default paths for easier management
-        $this->config = array_merge(array(
+        $this->options = array_merge(array(
             'namespace' => $this->namespace,
             'version' => $this->version,
             'corePath' => $corePath,
@@ -71,12 +73,12 @@ class Emo
             'cssUrl' => $assetsUrl . 'css/',
             'imagesUrl' => $assetsUrl . 'images/',
             'connectorUrl' => $assetsUrl . 'connector.php'
-        ), $config);
+        ), $options);
 
         // Set default options
-        $this->config = array_merge($this->config, array(
-            'noScriptMessage' => $this->getOption('noScriptMessage', $config, 'Turn on Javascript!'),
-            'show_debug' => (bool)$this->getOption('show_debug', $config, false),
+        $this->options = array_merge($this->options, array(
+            'noScriptMessage' => $this->getOption('noScriptMessage', $options, 'Turn on Javascript!'),
+            'show_debug' => (bool)$this->getOption('show_debug', $options, false),
             'tab' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+.',
             'addrCount' => 0,
             'debugString' => '',
@@ -101,8 +103,8 @@ class Emo
         if (!empty($key) && is_string($key)) {
             if ($options != null && array_key_exists($key, $options)) {
                 $option = $options[$key];
-            } elseif (array_key_exists($key, $this->config)) {
-                $option = $this->config[$key];
+            } elseif (array_key_exists($key, $this->options)) {
+                $option = $this->options[$key];
             } elseif (array_key_exists("{$this->namespace}.{$key}", $this->modx->config)) {
                 $option = $this->modx->getOption("{$this->namespace}.{$key}");
             }
@@ -114,7 +116,6 @@ class Emo
      * Custom base 64 encoding
      * Original emo code by Florian Wobbe - www.eprofs.de
      *
-     * @access public
      * @param string $data String to encode.
      * @return string Encoded data
      */
@@ -141,7 +142,7 @@ class Emo
                     $e4 = 64;
                 }
             }
-            $out .= $this->config['tab']{$e1} . $this->config['tab']{$e2} . $this->config['tab']{$e3} . $this->config['tab']{$e4};
+            $out .= $this->options['tab']{$e1} . $this->options['tab']{$e2} . $this->options['tab']{$e3} . $this->options['tab']{$e4};
         }
         return $out;
     }
@@ -151,19 +152,19 @@ class Emo
      * Modified original emo code by Florian Wobbe - www.eprofs.de
      *
      * @access public
-     * @param string $matches String to encode.
+     * @param array $matches String to encode.
      * @return string Encoded data
      */
     private function encodeLink($matches)
     {
-        if (!$this->config['addrCount']) {
+        if (!$this->options['addrCount']) {
             // Random generator seed
             mt_srand((double)microtime() * 1000000);
             // Make base 64 key
-            $this->config['tab'] = str_shuffle($this->config['tab']);
+            $this->options['tab'] = str_shuffle($this->options['tab']);
             // Set counter and add base 64 key to array
-            $this->config['addrCount'] = 1;
-            $this->config['addrArray'][] = $this->config['tab'];
+            $this->options['addrCount'] = 1;
+            $this->options['addrArray'][] = $this->options['tab'];
         }
 
         // Link without a linktext: insert email address as text part
@@ -185,30 +186,30 @@ class Emo
             '</a>';
 
         // Did we use the same link before?
-        $key = array_search($trueLink, $this->config['recentLinks']);
+        $key = array_search($trueLink, $this->options['recentLinks']);
 
         // Encrypt the complete link or use previously encrypted link
-        $crypted = ($key === false) ? $this->encodeBase64($trueLink) : $this->config['addrArray'][$key + 1];
+        $crypted = ($key === false) ? $this->encodeBase64($trueLink) : $this->options['addrArray'][$key + 1];
 
         // Add encrypted address to array
-        $this->config['addrArray'][] = $crypted;
+        $this->options['addrArray'][] = $crypted;
 
         // Create html of the fake link
-        $replaceLink = '<span id="_emoaddrId' . $this->config['addrCount'] . '"><span class="emo_address">' . $this->config['noScriptMessage'] . '</span></span>';
+        $replaceLink = '<span id="_emoaddrId' . $this->options['addrCount'] . '"><span class="emo_address">' . $this->options['noScriptMessage'] . '</span></span>';
 
         // Add link to recent links array
-        $this->config['recentLinks'][] = $trueLink;
+        $this->options['recentLinks'][] = $trueLink;
 
         // Debugging
-        if ($this->config['show_debug']) {
-            $this->config['debugString'] .= '  ' . $this->config['addrCount'] . ' ' . $matches[0] . "\n" .
+        if ($this->options['show_debug']) {
+            $this->options['debugString'] .= '  ' . $this->options['addrCount'] . ' ' . $matches[0] . "\n" .
                 '    ' . $matches[1] . "\n" .
                 '    ' . $matches[2] . "\n" .
                 '    ' . $crypted . "\n";
         }
 
         // Increase address counter
-        $this->config['addrCount']++;
+        $this->options['addrCount']++;
 
         return $replaceLink;
     }
@@ -223,11 +224,11 @@ class Emo
      */
     public function obfuscateEmail($content)
     {
-        $this->config['addrArray'] = array();
+        $this->options['addrArray'] = array();
 
         // Debugging
-        if ($this->config['show_debug']) {
-            $this->config['debugString'] = "\n" . '<!-- Emo debugging' . "\n";
+        if ($this->options['show_debug']) {
+            $this->options['debugString'] = "\n" . '<!-- Emo debugging' . "\n";
             $mtime = microtime();
             $mtime = explode(' ', $mtime);
             $mtime = $mtime[1] + $mtime[0];
@@ -240,45 +241,38 @@ class Emo
         $output = '';
         foreach ($parts as $part) {
             if (substr($part, 0, strlen('<form')) != '<form' && substr($part, 0, strlen('<!-- emo-exclude -->')) != '<!-- emo-exclude -->') {
-                $part = preg_replace_callback('#<a[^>]*mailto:([^\'"]+)[\'"][^>]*>(.*?)</a>#ius', array($this, 'encodeLink'), $part);
-                $part = preg_replace_callback('#([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})#iu', array($this, 'encodeLink'), $part);
+                $part = preg_replace_callback('#<a[^>]*mailto:([^\'"]+)[\'"][^>]*>(.*?)</a>#ius', array(
+                    $this, 'encodeLink'
+                ), $part);
+                $part = preg_replace_callback('#([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})#iu', array(
+                    $this, 'encodeLink'
+                ), $part);
             }
             $output .= $part;
         }
         $output = str_replace(array('<!-- emo-exclude -->', '<!-- /emo-exclude -->'), '', $output);
 
         // Script block
-        $this->config['addrJs'] = "\n" . '    <!-- This script block stores the encrypted -->' . "\n" .
+        $this->options['addrJs'] = "\n" . '    <!-- This script block stores the encrypted -->' . "\n" .
             '    <!-- email address(es) in an addresses array. -->' . "\n" .
             '    <script type="text/javascript">' . "\n" .
             '    //<![CDATA[' . "\n" .
-            '      var emo_addresses = ' . json_encode($this->config['addrArray']) . "\n" .
+            '      var emo_addresses = ' . json_encode($this->options['addrArray']) . "\n" .
             '      addLoadEvent(emo_replace());' . "\n" .
             '    //]]>' . "\n" .
             '    </script>' . "\n";
 
-//        Maybe you want to use jQuery ...
-//        $this->config['addrJs'] = "\n" . '    <!-- This script block stores the encrypted -->' . "\n" .
-//            '    <!-- email address(es) in an addresses array. -->' . "\n" .
-//            '    <script type="text/javascript">' . "\n" .
-//            '    //<![CDATA[' . "\n".
-//            '      var emo_addresses = ' . json_encode($this->config['addrArray']) . "\n".
-//            '      $(window).load(function(){emo_replace();});' . "\n" .
-//            '    //]]>' . "\n" .
-//            '    </script>' . "\n";
-
         // Debugging
-        if ($this->config['show_debug']) {
+        if ($this->options['show_debug']) {
             $mtime = microtime();
             $mtime = explode(' ', $mtime);
             $mtime = $mtime[1] + $mtime[0];
             $endtime = $mtime;
             $totaltime = ($endtime - $starttime);
-            $this->config['debugString'] .= '  Email crypting took ' . $totaltime . ' seconds' . "\n\n" .
-                '  ' . implode("\n  ", $this->config['recentLinks']) . "\n" .
+            $this->options['debugString'] .= '  Email crypting took ' . $totaltime . ' seconds' . "\n\n" .
+                '  ' . implode("\n  ", $this->options['recentLinks']) . "\n" .
                 '-->';
         }
         return $output;
     }
-
 }

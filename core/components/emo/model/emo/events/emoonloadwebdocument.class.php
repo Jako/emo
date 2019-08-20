@@ -1,9 +1,9 @@
 <?php
-
 /**
  * @package emo
  * @subpackage plugin
  */
+
 class EmoOnLoadWebDocument extends EmoPlugin
 {
     public function run()

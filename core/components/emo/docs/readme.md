@@ -17,7 +17,7 @@ MODX Package Management
 
 ## Documentation
 
-For more information please read the documentation on http://jako.github.io/emo-revo/
+For more information please read the documentation on https://jako.github.io/emo-revo/
 
 ## GitHub Repository
 

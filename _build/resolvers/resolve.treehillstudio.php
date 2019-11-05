@@ -2,7 +2,7 @@
 /**
  * Resolves install statistics
  *
- * @package agenda
+ * @package emo
  * @subpackage build
  *
  * @var mixed $object

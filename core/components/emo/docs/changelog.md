@@ -4,10 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.3] - TBD
+### Changed
+- Prevent an error, when $modx->resource is not set
+
 ## [1.8.2] - 2019-08-18
 ### Changed
 - PHP/MODX version check
-- Normalized/refactored code 
+- Normalized/refactored code
 
 ## [1.8.1] - 2018-10-03
 ### Added
@@ -27,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Improved email regular expression (thanks to @davidpede)
 - Plugin event code refactored
-      
+
 ## [1.7.0] - 2016-08-31
 ### Added
 - Output the addresses as JSON encoded array

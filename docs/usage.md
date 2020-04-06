@@ -20,7 +20,7 @@ href attributes as well as `mailto:` strings and `@` characters are hidden from
 spam-bots.
 
 The plugin does not modify adresses inside `<form>` tags. So posted and not
-validated forms do not break. Sections between  `<!-- emo-exclude --> and
+validated forms do not break. Sections between  `<!-- emo-exclude -->` and
 `<!-- /emo-exclude -->` are excluded from replacement.
 
 If the `No javascript` message contains a number, a link to a MODX resource with

@@ -3,8 +3,8 @@ docs_dir: docs
 site_dir: _build/site
 edit_uri: tree/master/docs
 
-repo_name: 'Jako/emo-revo'
-repo_url: https://github.com/Jako/emo-revo
+repo_name: 'Jako/emo'
+repo_url: https://github.com/Jako/emo
 
 copyright: '&copy; 2011-2019 <a href="https://treehillstudio.com">Treehill Studio</a>'
 

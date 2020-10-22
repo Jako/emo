@@ -3,7 +3,7 @@
   "lowCaseName": "emo",
   "description": "E-Mail Obfuscation with Javascript",
   "author": "Thomas Jakobi",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "package": {
     "elements": {
       "plugins": [

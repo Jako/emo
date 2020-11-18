@@ -182,7 +182,7 @@ class Emo
 
         // Extract existing classes
         $classes = '';
-        if(preg_match('/class=\"([^"]+)/iu', $matches[0], $class_match)) {
+        if (preg_match('/class=\"([^"]+)/iu', $matches[0], $class_match)) {
             $classes = ' ' . $class_match[1];
         }
 
@@ -246,15 +246,24 @@ class Emo
         $parts = preg_split($splitEx, $content, null, PREG_SPLIT_DELIM_CAPTURE);
         $output = '';
         foreach ($parts as $part) {
+            $result = $part;
             if (substr($part, 0, strlen('<form')) != '<form' && substr($part, 0, strlen('<!-- emo-exclude -->')) != '<!-- emo-exclude -->') {
-                $part = preg_replace_callback('#<a[^>]*mailto:([^\'"]+)[\'"][^>]*>(.*?)</a>#ius', array(
+                $result = preg_replace_callback('#<a[^>]*mailto:([^\'"]+)[\'"][^>]*>(.*?)</a>#ius', array(
                     $this, 'encodeLink'
                 ), $part);
-                $part = preg_replace_callback('#([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})#iu', array(
+                if (preg_last_error()) {
+                    $result = $part;
+                    $this->modx->log(xPDO::LOG_LEVEL_ERROR, 'The rendered resource content contains invalid characters.', '', 'obfuscateEmail');
+                }
+                $result = preg_replace_callback('#([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})#iu', array(
                     $this, 'encodeLink'
-                ), $part);
+                ), $result);
+                if (preg_last_error()) {
+                    $result = $part;
+                    $this->modx->log(xPDO::LOG_LEVEL_ERROR, 'The rendered resource content contains invalid characters: ', '', 'obfuscateEmail');
+                }
             }
-            $output .= $part;
+            $output .= $result;
         }
         $output = str_replace(array('<!-- emo-exclude -->', '<!-- /emo-exclude -->'), '', $output);
 

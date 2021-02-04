@@ -15,9 +15,9 @@ class EmoOnLoadWebDocument extends EmoPlugin
 
         if ($this->emo->getOption('include_scripts', null, true)) {
             if ($this->emo->getOption('debug', null, false) && $assetsUrl != MODX_ASSETS_URL . 'components/emo/') {
-                $this->modx->regClientScript($assetsUrl . '../../../source/js/emo.js');
+                $this->modx->regClientScript($assetsUrl . '../../../source/js/emo.js?v=' . $this->emo->version);
             } else {
-                $this->modx->regClientScript($jsUrl);
+                $this->modx->regClientScript($jsUrl . '?v=' . $this->emo->version);
             }
         }
         if ($cssUrl != '') {

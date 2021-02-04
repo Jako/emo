@@ -2,8 +2,8 @@
 /**
  * emo - E-Mail Obfuscation with Javascript
  *
- * Copyright 2011-2020 by Florian Wobbe - www.eprofs.de
- * Copyright 2011-2020 by Thomas Jakobi <thomas.jakobi@partout.info>
+ * Copyright 2011-2021 by Florian Wobbe - www.eprofs.de
+ * Copyright 2011-2021 by Thomas Jakobi <thomas.jakobi@partout.info>
  *
  * @package emo
  * @subpackage classfile
@@ -30,7 +30,7 @@ class Emo
      * The version
      * @var string $version
      */
-    public $version = '1.8.3';
+    public $version = '1.8.4';
 
     /**
      * The class options
@@ -182,7 +182,7 @@ class Emo
 
         // Extract existing classes
         $classes = '';
-        if (preg_match('/class=\"([^"]+)/iu', $matches[0], $class_match)) {
+        if (preg_match('/<a[^>]+class=\"([^"]+)/iu', $matches[0], $class_match)) {
             $classes = ' ' . $class_match[1];
         }
 

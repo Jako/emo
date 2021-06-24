@@ -1,3 +1,5 @@
+[![Default Lexicon](https://hosted.weblate.org/widgets/modx-extras/-/modx-emo-standard/svg-badge.svg)](https://hosted.weblate.org/projects/modx-extras/modx-emo-standard/)
+
 # emo
 
 E-Mail Obfuscation with Javascript for MODX Revolution.
@@ -15,3 +17,11 @@ MODX Package Management
 ## Documentation
 
 For more information please read the [documentation](https://jako.github.io/emo/).
+
+## License
+
+The project is licensed under the [GPLv2 license](https://github.com/Jako/emo/blob/master/core/components/emo/docs/license.md).
+
+## Translations
+
+Translations of the package can be made for the [Default Lexicon](https://hosted.weblate.org/projects/modx-extras/modx-emo-standard/) and the [System Setting Lexicon](https://hosted.weblate.org/projects/modx-extras/modx-emo-system-settings/)

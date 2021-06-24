@@ -5,19 +5,19 @@
  * @package emo
  * @subpackage lexicon
  */
-$_lang['setting_emo.css_path'] = 'Path to emo css';
-$_lang['setting_emo.css_path_desc'] = 'If this setting is set, a link to this css path is inserted at the end of the head area of the html code of the current resource.';
+$_lang['setting_emo.css_path'] = 'Pfad zum emo-CSS';
+$_lang['setting_emo.css_path_desc'] = 'Wenn diese Einstellung gesetzt ist, wird am Ende des Head-Bereichs ein Link zu dieser CSS-Datei eingefügt.';
 $_lang['setting_emo.debug'] = 'Debug';
-$_lang['setting_emo.debug_desc'] = 'Display debug informations.';
-$_lang['setting_emo.include_scripts'] = 'Include emo javascript';
-$_lang['setting_emo.include_scripts_desc'] = 'If this setting is set, a link to this js path is inserted at the end of the body section.';
-$_lang['setting_emo.js_path'] = 'Path to emo javascript';
-$_lang['setting_emo.js_path_desc'] = 'With this setting a different location of the emo javascript than {assets_url}components/emo/js/emo.min.js could be provided.';
-$_lang['setting_emo.no_script_message'] = '\'No javascript\' message (Resource ID for internal link)';
-$_lang['setting_emo.no_script_message_desc'] = 'All email addresses in the current document were replaced with the text in this setting. If the text is numeric, a link to the resource with that ID and the pagetitle of that resource is generated.';
-$_lang['setting_emo.selection_range'] = 'Comma separated list of enabled/disabled resource IDs for emo';
-$_lang['setting_emo.selection_range_desc'] = 'Insert a comma list with resource IDs, the plugin should (not) work on.';
-$_lang['setting_emo.selection_type'] = 'Selection type for enabled/disabled resources for emo';
-$_lang['setting_emo.selection_type_desc'] = 'If only some resources should worked by the plugin, change the value of this setting to \'include\'.';
-$_lang['setting_emo.tpl_only'] = 'Don\'t work on resources with blank template';
-$_lang['setting_emo.tpl_only_desc'] = 'Enable this, if the plugin should work on resources with the \'(blank)\' template.';
+$_lang['setting_emo.debug_desc'] = 'Debug-Informationen anzeigen.';
+$_lang['setting_emo.include_scripts'] = 'emo-Javascript einbinden';
+$_lang['setting_emo.include_scripts_desc'] = 'Wenn diese Einstellung gesetzt ist, wird am Ende des Body-Abschnitts ein Link zu dieser js-Datei eingefügt.';
+$_lang['setting_emo.js_path'] = 'Pfad zum emo-Javascript';
+$_lang['setting_emo.js_path_desc'] = 'Mit dieser Einstellung kann ein anderer Speicherort für das emo-Javascript als {assets_url}components/emo/js/emo.min.js angegeben werden.';
+$_lang['setting_emo.no_script_message'] = 'Meldung \'Kein Javascript\' (Ressourcen-ID für internen Link)';
+$_lang['setting_emo.no_script_message_desc'] = 'Alle E-Mail-Adressen im aktuellen Dokument wurden durch den Text in dieser Einstellung ersetzt. Wenn der Text numerisch ist, wird ein Link zu der Ressource mit dieser ID und dem Seitentitel dieser Ressource erzeugt.';
+$_lang['setting_emo.selection_range'] = 'Kommagetrennte Liste von aktivierten/deaktivierten Ressourcen-IDs für emo';
+$_lang['setting_emo.selection_range_desc'] = 'Fügen Sie eine kommaseparierte Liste mit Ressource-IDs ein, an denen das Plugin (nicht) arbeiten soll.';
+$_lang['setting_emo.selection_type'] = 'Auswahltyp für aktivierte/deaktivierte Ressourcen für emo';
+$_lang['setting_emo.selection_type_desc'] = 'Wenn nur einige Ressourcen durch das Plugin bearbeitet werden sollen, ändern Sie den Wert dieser Einstellung auf \'include\'.';
+$_lang['setting_emo.tpl_only'] = 'Keine Ressourcen mit leerer Vorlage bearbeiten';
+$_lang['setting_emo.tpl_only_desc'] = 'Aktivieren Sie diese Einstellung, wenn das Plugin auf Ressourcen mit der Vorlage \'(blank)\' arbeiten soll.';

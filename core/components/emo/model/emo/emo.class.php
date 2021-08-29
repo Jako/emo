@@ -123,13 +123,13 @@ class Emo
     {
         $out = '';
         for ($i = 0; $i < strlen($data);) {
-            $c1 = ord($data{$i++});
+            $c1 = ord($data[$i++]);
             $c2 = $c3 = null;
             if ($i < strlen($data)) {
-                $c2 = ord($data{$i++});
+                $c2 = ord($data[$i++]);
             }
             if ($i < strlen($data)) {
-                $c3 = ord($data{$i++});
+                $c3 = ord($data[$i++]);
             }
             $e1 = $c1 >> 2;
             $e2 = (($c1 & 3) << 4) + ($c2 >> 4);
@@ -142,7 +142,7 @@ class Emo
                     $e4 = 64;
                 }
             }
-            $out .= $this->options['tab']{$e1} . $this->options['tab']{$e2} . $this->options['tab']{$e3} . $this->options['tab']{$e4};
+            $out .= $this->options['tab'][$e1] . $this->options['tab'][$e2] . $this->options['tab'][$e3] . $this->options['tab'][$e4];
         }
         return $out;
     }

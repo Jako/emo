@@ -2,7 +2,7 @@
 /**
  * Setup options
  *
- * @package colorpicker
+ * @package emo
  * @subpackage build
  *
  * @var array $options

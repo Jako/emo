@@ -3,7 +3,7 @@
  * emo - E-Mail Obfuscation with Javascript
  *
  * Copyright 2011-2021 by Florian Wobbe - www.eprofs.de
- * Copyright 2011-2021 by Thomas Jakobi <thomas.jakobi@partout.info>
+ * Copyright 2011-2021 by Thomas Jakobi <office@treehillstudio.com>
  *
  * @package emo
  * @subpackage classfile

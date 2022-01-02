@@ -1,7 +1,7 @@
 {
   "name": "emo",
   "description": "E-Mail Obfuscation with Javascript",
-  "author": "Thomas Jakobi <thomas.jakobi@partout.info>",
+  "author": "Thomas Jakobi <office@treehillstudio.com>",
   "private": true,
   "devDependencies": {
     "@lodder/grunt-postcss": "^3.1.1",

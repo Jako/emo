@@ -67,7 +67,7 @@
   "dependencies": [
     {
       "name": "php",
-      "version": ">=5.6"
+      "version": ">=7.2"
     },
     {
       "name": "modx",
@@ -83,6 +83,7 @@
     },
     "resolver": {
       "after": [
+        "resolve.cleanup.php",
         "resolve.treehillstudio.php"
       ]
     }

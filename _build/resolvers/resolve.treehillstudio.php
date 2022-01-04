@@ -5,8 +5,8 @@
  * @package emo
  * @subpackage build
  *
- * @var mixed $object
  * @var array $options
+ * @var xPDOObject $object
  * @var xPDOTransport $transport
  */
 

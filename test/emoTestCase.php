@@ -30,7 +30,7 @@ class emoTestCase extends \PHPUnit\Framework\TestCase
         $this->emo = new emo($this->modx);
         $this->emo->options['debug'] = true;
 
-        $this->modx->placeholders = array();
+        $this->modx->placeholders = [];
         $this->modx->emo = &$this->emo;
 
         error_reporting(E_ALL);

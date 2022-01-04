@@ -4,9 +4,13 @@
  * @subpackage plugin
  */
 
-class EmoOnWebPagePrerender extends EmoPlugin
+namespace TreehillStudio\Emo\Plugins\Events;
+
+use TreehillStudio\Emo\Plugins\Plugin;
+
+class OnWebPagePrerender extends Plugin
 {
-    public function run()
+    public function process()
     {
         $noScriptMessage = $this->emo->getOption('no_script_message');
         $noScriptMessage = ($noScriptMessage !== '') ? $noScriptMessage : $this->modx->lexicon('emo.no_script_message');

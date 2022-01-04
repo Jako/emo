@@ -1,0 +1,25 @@
+{
+  "name": "treehillstudio/emo",
+  "description": "E-Mail Obfuscation with Javascript",
+  "authors": [
+    {
+      "name": "Thomas Jakobi",
+      "email": "office@treehillstudio.com",
+      "homepage": "https://treehillstudio.com"
+    }
+  ],
+  "license": "proprietary",
+  "config": {
+    "platform": {
+      "php": "7.2.5"
+    }
+  },
+  "require": {
+    "php": ">=7.2.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "TreehillStudio\\Emo\\": "src/"
+    }
+  }
+}

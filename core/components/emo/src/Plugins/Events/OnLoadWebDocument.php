@@ -4,13 +4,17 @@
  * @subpackage plugin
  */
 
-class EmoOnLoadWebDocument extends EmoPlugin
+namespace TreehillStudio\Emo\Plugins\Events;
+
+use TreehillStudio\Emo\Plugins\Plugin;
+
+class OnLoadWebDocument extends Plugin
 {
-    public function run()
+    public function process()
     {
         $assetsUrl = $this->emo->getOption('assetsUrl');
         $jsUrl = $this->emo->getOption('js_path');
-        $jsUrl = ($jsUrl) ? $jsUrl : $assetsUrl . 'js/emo.min.js';
+        $jsUrl = ($jsUrl) ?: $assetsUrl . 'js/emo.min.js';
         $cssUrl = $this->emo->getOption('css_path');
 
         if ($this->emo->getOption('include_scripts', null, true)) {

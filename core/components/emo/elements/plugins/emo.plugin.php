@@ -9,32 +9,25 @@
  * @var array $scriptProperties
  */
 
-$className = 'Emo' . $modx->event->name;
+$className = 'TreehillStudio\Emo\Plugins\Events\\' . $modx->event->name;
 
 $corePath = $modx->getOption('emo.core_path', null, $modx->getOption('core_path') . 'components/emo/');
 /** @var Emo $emo */
-$emo = $modx->getService('emo', 'Emo', $corePath . 'model/emo/', array(
+$emo = $modx->getService('emo', 'Emo', $corePath . 'model/emo/', [
     'core_path' => $corePath
-));
+]);
 
-// Get selection range and selection type system settings
-$tplOnly = (bool)$emo->getOption('tpl_only', null, true);
-$selectionType = $emo->getOption('selection_type', null, 'exclude');
-$selectionRange = $emo->getOption('selection_range');
-
-// Stop plugin on selection range and selection type
-$selectionRange = explode(',', str_replace(' ', '', $selectionRange));
-$emoFound = in_array((isset($modx->resource)) ? $modx->resource->get('id') : 0, $selectionRange);
-if (($emoFound && ($selectionType == 'exclude')) || (!$emoFound && ($selectionType == 'include')) || ($tplOnly && ($modx->resource->get('template') == 0))) {
-    return;
-}
-
-$modx->loadClass('EmoPlugin', $emo->getOption('modelPath') . 'emo/events/', true, true);
-$modx->loadClass($className, $emo->getOption('modelPath') . 'emo/events/', true, true);
-if (class_exists($className)) {
-    /** @var EmoPlugin $handler */
-    $handler = new $className($modx, $scriptProperties);
-    $handler->run();
+if ($emo) {
+    if (class_exists($className)) {
+        $handler = new $className($modx, $scriptProperties);
+        if (get_class($handler) == $className) {
+            $handler->run();
+        } else {
+            $modx->log(xPDO::LOG_LEVEL_ERROR, $className. ' could not be initialized!', '', 'Emo Plugin');
+        }
+    } else {
+        $modx->log(xPDO::LOG_LEVEL_ERROR, $className. ' was not found!', '', 'Emo Plugin');
+    }
 }
 
 return;

@@ -108,13 +108,13 @@ if ($object->xpdo) {
             $corePath = $modx->getOption('core_path', null, MODX_CORE_PATH);
             $assetsPath = $modx->getOption('assets_path', null, MODX_ASSETS_PATH);
 
-            if ($oldPackage && $oldPackage->compareVersion('1.8.4', '>')) {
+            if ($oldPackage && $oldPackage->compareVersion('1.8.5', '>')) {
                 $cleanup = [
                     'core' => [
                         'components/emo/model/emo/events',
                     ]
                 ];
-                cleanupFolders($modx, $corePath, $assetsPath, $cleanup, 'Emo', '1.8.4');
+                cleanupFolders($modx, $corePath, $assetsPath, $cleanup, 'Emo', '1.8.5');
             }
             $success = true;
             break;

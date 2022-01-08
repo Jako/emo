@@ -8,7 +8,7 @@
       "homepage": "https://treehillstudio.com"
     }
   ],
-  "license": "proprietary",
+  "license": "GPL-2.0-or-later",
   "config": {
     "platform": {
       "php": "7.2.5"

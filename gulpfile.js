@@ -19,6 +19,20 @@ const banner = '/*!\n' +
     ' * Version: <%= pkg.version %>\n' +
     ' * Build date: ' + format("yyyy-MM-dd", new Date()) + '\n' +
     ' */';
+const year = new Date().getFullYear();
+
+let phpversion;
+let modxversion;
+pkg.dependencies.forEach(function (dependency, index) {
+    switch (pkg.dependencies[index].name) {
+        case 'php':
+            phpversion = pkg.dependencies[index].version.replace(/>=/, '');
+            break;
+        case 'modx':
+            modxversion = pkg.dependencies[index].version.replace(/>=/, '');
+            break;
+    }
+});
 
 gulp.task('scripts-web', function () {
     return gulp.src([
@@ -61,7 +75,7 @@ gulp.task('bump-copyright', function () {
         'core/components/emo/model/emo/emo.class.php',
         'core/components/emo/src/Emo.php',
     ], {base: './'})
-        .pipe(replace(/Copyright 2011(-\d{4})? by/g, 'Copyright ' + (new Date().getFullYear() > 2011 ? '2011-' : '') + new Date().getFullYear() + ' by'))
+        .pipe(replace(/Copyright 2011(-\d{4})? by/g, 'Copyright ' + (year > 2011 ? '2011-' : '') + year + ' by'))
         .pipe(gulp.dest('.'));
 });
 gulp.task('bump-version', function () {
@@ -75,10 +89,18 @@ gulp.task('bump-docs', function () {
     return gulp.src([
         'mkdocs.yml',
     ], {base: './'})
-        .pipe(replace(/&copy; 2011(-\d{4})?/g, '&copy; ' + (new Date().getFullYear() > 2011 ? '2011-' : '') + new Date().getFullYear()))
+        .pipe(replace(/&copy; 2011(-\d{4})?/g, '&copy; ' + (year > 2011 ? '2011-' : '') + year))
         .pipe(gulp.dest('.'));
 });
-gulp.task('bump', gulp.series('bump-copyright', 'bump-version', 'bump-docs'));
+gulp.task('bump-requirements', function () {
+    return gulp.src([
+        'docs/index.md',
+    ], {base: './'})
+        .pipe(replace(/[*-] MODX Revolution \d.\d.*/g, '* MODX Revolution ' + modxversion + '+'))
+        .pipe(replace(/[*-] PHP (v)?\d.\d.*/g, '* PHP ' + phpversion + '+'))
+        .pipe(gulp.dest('.'));
+});
+gulp.task('bump', gulp.series('bump-copyright', 'bump-version', 'bump-docs', 'bump-requirements'));
 
 
 gulp.task('watch', function () {

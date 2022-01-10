@@ -154,7 +154,7 @@ class Emo
                     $e4 = 64;
                 }
             }
-            $out .= $this->options['tab'][$e1] . $this->options['tab'][$e2] . $this->options['tab'][$e3] . $this->options['tab'][$e4];
+            $out .= $this->getOption('tab')[$e1] . $this->getOption('tab')[$e2] . $this->getOption('tab')[$e3] . $this->getOption('tab')[$e4];
         }
         return $out;
     }
@@ -169,14 +169,14 @@ class Emo
      */
     private function encodeLink($matches)
     {
-        if (!$this->options['addrCount']) {
+        if (!$this->getOption('addrCount')) {
             // Random generator seed
             mt_srand((double)microtime() * 1000000);
             // Make base 64 key
-            $this->options['tab'] = str_shuffle($this->options['tab']);
+            $this->options['tab'] = str_shuffle($this->getOption('tab'));
             // Set counter and add base 64 key to array
             $this->options['addrCount'] = 1;
-            $this->options['addrArray'][] = $this->options['tab'];
+            $this->options['addrArray'][] = $this->getOption('tab');
         }
 
         // Link without a linktext: insert email address as text part
@@ -204,10 +204,10 @@ class Emo
             '</a>';
 
         // Did we use the same link before?
-        $key = array_search($trueLink, $this->options['recentLinks']);
+        $key = array_search($trueLink, $this->getOption('recentLinks'));
 
         // Encrypt the complete link or use previously encrypted link
-        $crypted = ($key === false) ? $this->encodeBase64($trueLink) : $this->options['addrArray'][$key + 1];
+        $crypted = ($key === false) ? $this->encodeBase64($trueLink) : $this->getOption('addrArray')[$key + 1];
 
         // Add encrypted address to array
         $this->options['addrArray'][] = $crypted;
@@ -219,8 +219,8 @@ class Emo
         $this->options['recentLinks'][] = $trueLink;
 
         // Debugging
-        if ($this->options['show_debug']) {
-            $this->options['debugString'] .= '  ' . $this->options['addrCount'] . ' ' . $matches[0] . "\n" .
+        if ($this->getOption('show_debug')) {
+            $this->options['debugString'] .= '  ' . $this->getOption('addrCount') . ' ' . $matches[0] . "\n" .
                 '    ' . $matches[1] . "\n" .
                 '    ' . $matches[2] . "\n" .
                 '    ' . $crypted . "\n";
@@ -245,7 +245,7 @@ class Emo
         $this->options['addrArray'] = [];
 
         // Debugging
-        if ($this->options['show_debug']) {
+        if ($this->getOption('show_debug')) {
             $this->options['debugString'] = "\n" . '<!-- Emo debugging' . "\n";
             $mtime = microtime();
             $mtime = explode(' ', $mtime);
@@ -284,20 +284,20 @@ class Emo
             '    <!-- email address(es) in an addresses array. -->' . "\n" .
             '    <script type="text/javascript">' . "\n" .
             '    //<![CDATA[' . "\n" .
-            '      var emo_addresses = ' . json_encode($this->options['addrArray']) . "\n" .
+            '      var emo_addresses = ' . json_encode($this->getOption('addrArray')) . "\n" .
             '      addLoadEvent(emo_replace());' . "\n" .
             '    //]]>' . "\n" .
             '    </script>' . "\n";
 
         // Debugging
-        if ($this->options['show_debug']) {
+        if ($this->getOption('show_debug')) {
             $mtime = microtime();
             $mtime = explode(' ', $mtime);
             $mtime = $mtime[1] + $mtime[0];
             $endtime = $mtime;
             $totaltime = ($endtime - $starttime);
             $this->options['debugString'] .= '  Email crypting took ' . $totaltime . ' seconds' . "\n\n" .
-                '  ' . implode("\n  ", $this->options['recentLinks']) . "\n" .
+                '  ' . implode("\n  ", $this->getOption('recentLinks')) . "\n" .
                 '-->';
         }
         return $output;

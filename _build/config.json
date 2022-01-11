@@ -9,8 +9,8 @@
       "plugins": [
         {
           "name": "emo",
+          "description": "E-Mail Obfuscation with Javascript",
           "file": "emo.plugin.php",
-          "description": "emo E-Mail Obfuscation plugin",
           "events": [
             "OnLoadWebDocument",
             "OnWebPagePrerender"

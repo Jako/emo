@@ -32,7 +32,7 @@ abstract class Plugin
     public function __construct($modx, &$scriptProperties)
     {
         $this->scriptProperties = &$scriptProperties;
-        $this->modx = &$modx;
+        $this->modx =& $modx;
         $corePath = $this->modx->getOption('emo.core_path', null, $this->modx->getOption('core_path') . 'components/emo/');
         $this->emo = $this->modx->getService('emo', 'Emo', $corePath . 'model/emo/', [
             'core_path' => $corePath

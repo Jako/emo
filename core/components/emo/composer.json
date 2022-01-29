@@ -9,11 +9,6 @@
     }
   ],
   "license": "GPL-2.0-or-later",
-  "config": {
-    "platform": {
-      "php": "7.2.5"
-    }
-  },
   "require": {
     "php": ">=7.2.5"
   },

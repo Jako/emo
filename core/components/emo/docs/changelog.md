@@ -5,18 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.6] - 2022-02-02
+
+### Fixed
+
+- Restore accidentally removed selection_range, selection_type and tpl_only handling
+
 ## [1.8.5] - 2022-01-04
+
+### Fixed
+
+- Fix 'Array and string offset access syntax with curly braces is deprecated' message
 
 ### Changed
 
-- Fix 'Array and string offset access syntax with curly braces is deprecated' message
 - Full MODX 3 compatibility
 
 ## [1.8.4] - 2021-02-04
 
+### Fixed
+ 
+- Bugfix for emptying the rendered resource during a regular expression issue
+
 ### Changed
 
-- Bugfix for emptying the rendered resource during a regular expression issue 
 - Logging a regular expression issue
 - Retain only the original classes of the a-tag
 
@@ -36,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.8.1] - 2018-10-03
 
-### Added
+### Fixed
 
 - Bugfix for not installed assets/components files
 
@@ -48,13 +60,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.7.2] - 2016-11-17
 
-### Changed
+### Fixed
 
 - Restore accidentally removed selection range and selection type code
 
 ## [1.7.1] - 2016-10-28
 
-### Changed
+### Fixed
 
 - Fix for 'selection_type' system setting (thanks to @davidpede)
 
@@ -72,13 +84,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.6.1] - 2016-08-16
 
-### Changed
+### Fixed
 
 - Bugfix: Parse error in PHP 7
 
 ## [1.6.0] - 2016-02-28
 
-### Changed
+### Fixed
 
 - Bugfix: Replace not linked email adresses
 
@@ -88,7 +100,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.5.4] - 2016-01-19
 
-### Changed
+### Fixed
 
 - Bugfix: Don't escape html special chars in linktext
 
@@ -98,13 +110,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Using Grunt uglify and cssmin
 
-### Added
+### Fixed
 
 - Bugfix for addLoadEvent
 
 ## [1.5.2] - 2015-02-27
 
-### Changed
+### Fixed
 
 - Bugfix: Wrong default options
 
@@ -114,7 +126,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.5.1] - 2015-02-18
 
-### Changed
+### Fixed
 
 - Bugfix: UTF-8 characters in linktext
 

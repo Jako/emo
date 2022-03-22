@@ -65,7 +65,7 @@ abstract class Plugin
         $selectionRange = $this->emo->getOption('selection_range');
 
         // Stop plugin on selection range and selection type
-        $selectionRange = explode(',', str_replace(' ', '', $selectionRange));
+        $selectionRange = ($selectionRange) ? array_map('trim', explode(',', $selectionRange)) : [];
         $emoFound = in_array((isset($modx->resource)) ? $modx->resource->get('id') : 0, $selectionRange);
         if (($emoFound && ($selectionType == 'exclude')) || (!$emoFound && ($selectionType == 'include')) || ($tplOnly && ($this->modx->resource->get('template') == 0))) {
             return false;

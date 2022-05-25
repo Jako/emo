@@ -3,9 +3,15 @@
   "lowCaseName": "emo",
   "description": "E-Mail Obfuscation with Javascript",
   "author": "Thomas Jakobi",
-  "version": "1.8.8",
+  "version": "1.8.9",
   "package": {
     "elements": {
+      "chunks": [
+        {
+          "name": "tplEmoAdresses",
+          "file": "emo_addresses.chunk.html"
+        }
+      ],
       "plugins": [
         {
           "name": "emo",
@@ -55,6 +61,11 @@
         "key": "no_script_message",
         "area": "system",
         "value": ""
+      },
+      {
+        "key": "adresses_tpl",
+        "area": "system",
+        "value": "tplEmoAdresses"
       },
       {
         "key": "debug",

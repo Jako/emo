@@ -41,7 +41,7 @@ class Emo
      * The version
      * @var string $version
      */
-    public $version = '1.8.8';
+    public $version = '1.8.9';
 
     /**
      * The class options
@@ -88,8 +88,9 @@ class Emo
 
         // Add default options
         $this->options = array_merge($this->options, [
-            'noScriptMessage' => $this->getOption('noScriptMessage', $options, 'Turn on Javascript!'),
-            'show_debug' => (bool)$this->getOption('show_debug', $options, false),
+            'noScriptMessage' => $this->modx->getOption($this->namespace . '.noScriptMessage', $options, 'Turn on Javascript!'),
+            'show_debug' => (bool)$this->modx->getOption($this->namespace . '.show_debug', $options, false),
+            'adresses_tpl' => $this->modx->getOption($this->namespace . '.adresses_tpl', $options, 'tplEmoAdresses'),
             'tab' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+.',
             'addrCount' => 0,
             'debugString' => '',
@@ -280,14 +281,9 @@ class Emo
         $output = str_replace(['<!-- emo-exclude -->', '<!-- /emo-exclude -->'], '', $output);
 
         // Script block
-        $this->options['addrJs'] = "\n" . '    <!-- This script block stores the encrypted -->' . "\n" .
-            '    <!-- email address(es) in an addresses array. -->' . "\n" .
-            '    <script type="text/javascript">' . "\n" .
-            '    //<![CDATA[' . "\n" .
-            '      var emo_addresses = ' . json_encode($this->getOption('addrArray')) . "\n" .
-            '      addLoadEvent(emo_replace());' . "\n" .
-            '    //]]>' . "\n" .
-            '    </script>' . "\n";
+        $this->options['addrJs'] = "\n" . $this->modx->getChunk($this->getOption('adresses_tpl'), [
+                'addr_array' => json_encode($this->getOption('addrArray'))
+            ]);
 
         // Debugging
         if ($this->getOption('show_debug')) {

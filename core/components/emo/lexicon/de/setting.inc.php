@@ -21,3 +21,11 @@ $_lang['setting_emo.selection_type'] = 'Auswahltyp für aktivierte/deaktivierte 
 $_lang['setting_emo.selection_type_desc'] = 'Wenn nur einige Ressourcen durch das Plugin bearbeitet werden sollen, ändern Sie den Wert dieser Einstellung auf `include`.';
 $_lang['setting_emo.tpl_only'] = 'Keine Ressourcen mit leerer Vorlage bearbeiten';
 $_lang['setting_emo.tpl_only_desc'] = 'Aktivieren Sie diese Einstellung, wenn das Plugin auf Ressourcen mit der Vorlage `(blank)` arbeiten soll.';
+/**
+ * Setting Lexicon Entries for emo
+ *
+ * @package emo
+ * @subpackage lexicon
+ */
+$_lang['setting_emo.adresses_tpl'] = 'Adressen Chunk';
+$_lang['setting_emo.adresses_tpl_desc'] = 'Name eines Chunks, der das Javascript für die verschlüsselten Adressen am Ende des Bodys enthält.';

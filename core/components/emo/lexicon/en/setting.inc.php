@@ -5,6 +5,8 @@
  * @package emo
  * @subpackage lexicon
  */
+$_lang['setting_emo.adresses_tpl'] = 'Adresses Chunk';
+$_lang['setting_emo.adresses_tpl_desc'] = 'Name of a chunk that contains the Javascript for the encrypted adresses at the end of the body.';
 $_lang['setting_emo.css_path'] = 'Path to emo css';
 $_lang['setting_emo.css_path_desc'] = 'If this setting is set, a link to this css path is inserted at the end of the head area of the html code of the current resource.';
 $_lang['setting_emo.debug'] = 'Debug';

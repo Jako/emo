@@ -30,12 +30,20 @@ that ID is generated. This could i.e. point to a resouce with a contact form.
 
 emo uses the following system settings in the namespace `emo`:
    
-Property | Description | Default
--------- | ----------- | -------
-adresses_tpl | Name of a chunk that contains the Javascript for the encrypted adresses at the end of the body. | tplEmoAdresses
-css_path | Path to emo css |
-js_path | Path to emo javascript | `/assets/components/emo/js/emo.min.js`
-no_script_message | 'No javascript' message (Resource ID for internal link) | Turn on JavaScript!
-selection_range | Comma separated list of enabled/disabled resource IDs for emo |
-selection_type | Selection type for enabled/disabled resources for emo | -
-tpl_only | Don't work on resources with blank template | Yes
+| Property          | Description                                                                                     | Default                                |
+|-------------------|-------------------------------------------------------------------------------------------------|----------------------------------------|
+| adresses_tpl      | Name of a chunk that contains the Javascript for the encrypted adresses at the end of the body. | tplEmoAdresses                         |
+| css_path          | Path to emo css                                                                                 |                                        |
+| js_path           | Path to emo javascript                                                                          | `/assets/components/emo/js/emo.min.js` |
+| no_script_message | 'No javascript' message (Resource ID for internal link)                                         | Turn on JavaScript!                    |
+| selection_range   | Comma separated list of enabled/disabled resource IDs for emo                                   |                                        |
+| selection_type    | Selection type for enabled/disabled resources for emo                                           | -                                      |
+| tpl_only          | Don't work on resources with blank template                                                     | Yes                                    |
+
+## Output issues
+
+Please make sure that the HTML output of MODX uses only UTF-8 characters.
+Otherwise, the output may break and a blank page will be displayed. This can
+happen if a non-UTF-8 locale is set in the MODX system settings and a date
+modifier is used. In addition, the UTF-8 characters must be
+[precomposed](https://en.wikipedia.org/wiki/Precomposed_character).

@@ -15,12 +15,13 @@
 <div class="container">
     <h1>Congratulations!</h1>
     <section>
-        <p>This is a test: <span id="_emoaddrId5"><span class="emo_address">Turn on Javascript!</span></span></p>
+        <p>This is a test: <span id="_emoaddrId6"><span class="emo_address">Turn on Javascript!</span></span></p>
         <p>This is a test: <span id="_emoaddrId1"><span class="emo_address">Turn on Javascript!</span></span></p>
         <p>This is a test: <span id="_emoaddrId2"><span class="emo_address">Turn on Javascript!</span></span></p>
-        <p>This is a test: <span class="test654"><span id="_emoaddrId6"><span class="emo_address">Turn on Javascript!</span></span></span></p>
         <p>This is a test: <span id="_emoaddrId3"><span class="emo_address">Turn on Javascript!</span></span></p>
+        <p>This is a test: <span class="test654"><span id="_emoaddrId7"><span class="emo_address">Turn on Javascript!</span></span></span></p>
         <p>This is a test: <span id="_emoaddrId4"><span class="emo_address">Turn on Javascript!</span></span></p>
+        <p>This is a test: <span id="_emoaddrId5"><span class="emo_address">Turn on Javascript!</span></span></p>
     </section>
 </div>
 </body>

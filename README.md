@@ -1,4 +1,4 @@
-[![Default Lexicon](https://hosted.weblate.org/widgets/modx-extras/emo/standard/svg-badge.svg)](https://hosted.weblate.org/projects/modx-extras/emo/standard/)
+[![Default Lexicon](https://hosted.weblate.org/widget/modx-extras/emo/standard/svg-badge.svg)](https://hosted.weblate.org/projects/modx-extras/emo/standard/)
 
 # emo
 

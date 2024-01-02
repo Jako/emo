@@ -1,4 +1,4 @@
-[![Default Lexicon](https://hosted.weblate.org/widgets/modx-extras/-/modx-emo-standard/svg-badge.svg)](https://hosted.weblate.org/projects/modx-extras/modx-emo-standard/)
+[![Default Lexicon](https://hosted.weblate.org/widgets/modx-extras/emo/standard/svg-badge.svg)](https://hosted.weblate.org/projects/modx-extras/emo/standard/)
 
 # emo
 
@@ -24,4 +24,4 @@ The project is licensed under the [GPLv2 license](https://github.com/Jako/emo/bl
 
 ## Translations
 
-Translations of the package can be made for the [Default Lexicon](https://hosted.weblate.org/projects/modx-extras/modx-emo-standard/) and the [System Setting Lexicon](https://hosted.weblate.org/projects/modx-extras/modx-emo-system-settings/)
+Translations of the package can be made for the [Default Lexicon](https://hosted.weblate.org/projects/modx-extras/emo/standard/) and the [System Setting Lexicon](https://hosted.weblate.org/projects/modx-extras/emo/system-settings/)

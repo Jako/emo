@@ -248,10 +248,7 @@ class Emo
         // Debugging
         if ($this->getOption('show_debug')) {
             $this->options['debugString'] = "\n" . '<!-- Emo debugging' . "\n";
-            $mtime = microtime();
-            $mtime = array_map('intval', explode(' ', $mtime));
-            $mtime = $mtime[1] + $mtime[0];
-            $starttime = $mtime;
+            $starttime = microtime(true);
         }
 
         // exclude form and emo-exclude tags
@@ -287,11 +284,9 @@ class Emo
 
         // Debugging
         if ($this->getOption('show_debug')) {
-            $mtime = microtime();
-            $mtime = array_map('intval', explode(' ', $mtime));
-            $endtime = $mtime;
+            $endtime = microtime(true);
             $totaltime = ($endtime - $starttime);
-            $this->options['debugString'] .= '  Email crypting took ' . $totaltime . ' seconds' . "\n\n" .
+            $this->options['debugString'] .= '  Email crypting took ' . round($totaltime, 4)  . ' seconds' . "\n\n" .
                 '  ' . implode("\n  ", $this->getOption('recentLinks')) . "\n" .
                 '-->';
         }

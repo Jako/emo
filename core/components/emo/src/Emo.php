@@ -3,7 +3,7 @@
  * emo
  *
  * Copyright 2008-2011 by Florian Wobbe - www.eprofs.de
- * Copyright 2011-2023 by Thomas Jakobi <office@treehillstudio.com>
+ * Copyright 2011-2024 by Thomas Jakobi <office@treehillstudio.com>
  *
  * @package emo
  * @subpackage classfile
@@ -41,7 +41,7 @@ class Emo
      * The version
      * @var string $version
      */
-    public $version = '1.8.9';
+    public $version = '1.8.10';
 
     /**
      * The class options
@@ -148,10 +148,10 @@ class Emo
             $e2 = (($c1 & 3) << 4) + ($c2 >> 4);
             $e3 = (($c2 & 15) << 2) + ($c3 >> 6);
             $e4 = $c3 & 63;
-            if (is_nan($c2)) {
+            if (is_null($c2) || is_nan($c2)) {
                 $e3 = $e4 = 64;
             } else {
-                if (is_nan($c3)) {
+                if (is_null($c3) || is_nan($c3)) {
                     $e4 = 64;
                 }
             }
@@ -187,7 +187,7 @@ class Emo
 
         // rawurlencode/rawurldecode a possible subject/body
         $matches[1] = preg_replace_callback(
-            '!(.*\?(subject|body)=)([^\?]*)!iu',
+            '!(.*\?(subject|body)=)([^?]*)!iu',
             function ($m) {
                 return $m[1] . rawurldecode(rawurlencode($m[3]));
             }, $matches[1]
@@ -249,14 +249,14 @@ class Emo
         if ($this->getOption('show_debug')) {
             $this->options['debugString'] = "\n" . '<!-- Emo debugging' . "\n";
             $mtime = microtime();
-            $mtime = explode(' ', $mtime);
+            $mtime = array_map('intval', explode(' ', $mtime));
             $mtime = $mtime[1] + $mtime[0];
             $starttime = $mtime;
         }
 
         // exclude form and emo-exclude tags
         $splitEx = "#((?:<form|<!-- emo-exclude -->).*?(?:</form>|<!-- /emo-exclude -->))#ius";
-        $parts = preg_split($splitEx, $content, null, PREG_SPLIT_DELIM_CAPTURE);
+        $parts = preg_split($splitEx, $content, -1, PREG_SPLIT_DELIM_CAPTURE);
         $output = '';
         foreach ($parts as $part) {
             $result = $part;
@@ -288,8 +288,7 @@ class Emo
         // Debugging
         if ($this->getOption('show_debug')) {
             $mtime = microtime();
-            $mtime = explode(' ', $mtime);
-            $mtime = $mtime[1] + $mtime[0];
+            $mtime = array_map('intval', explode(' ', $mtime));
             $endtime = $mtime;
             $totaltime = ($endtime - $starttime);
             $this->options['debugString'] .= '  Email crypting took ' . $totaltime . ' seconds' . "\n\n" .

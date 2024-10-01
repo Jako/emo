@@ -22,6 +22,11 @@
         <p>This is a test: <span class="test654">user@host.com</span></p>
         <p>This is a test: <a class="test678" href="mailto:user@host.com?subject=my subject&amp;body=My body">user@host.com</a></p>
         <p>This is a test: <a href="mailto:user@host.com?subject=my subject&amp;body=My body"><span class="mSpace top2 fs20 icon-envelope white"></span>user@host.com</a></p>
+        <form>
+            <input name="input" value="test@mail.de">
+            <textarea name="textarea">test@mail.de</textarea>
+        </form>
+        <p><img src="assets/img/logo-white.png" data-at2x="assets/img/logo-white@2x.png" alt="" class="logo"></p>
     </section>
 </div>
 </body>

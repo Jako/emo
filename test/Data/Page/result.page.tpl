@@ -22,6 +22,11 @@
         <p>This is a test: <span class="test654"><span id="_emoaddrId7"><span class="emo_address">Turn on Javascript!</span></span></span></p>
         <p>This is a test: <span id="_emoaddrId4"><span class="emo_address">Turn on Javascript!</span></span></p>
         <p>This is a test: <span id="_emoaddrId5"><span class="emo_address">Turn on Javascript!</span></span></p>
+        <form>
+            <input name="input" value="test@mail.de">
+            <textarea name="textarea">test@mail.de</textarea>
+        </form>
+        <p><img src="assets/img/logo-white.png" data-at2x="assets/img/logo-white@2x.png" alt="" class="logo"></p>
     </section>
 </div>
 </body>

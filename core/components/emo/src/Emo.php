@@ -11,6 +11,7 @@
 
 namespace TreehillStudio\Emo;
 
+use Arubacao\TldChecker\Validator;
 use modX;
 use xPDO;
 
@@ -41,7 +42,7 @@ class Emo
      * The version
      * @var string $version
      */
-    public $version = '1.8.10';
+    public $version = '1.9.0';
 
     /**
      * The class options
@@ -170,65 +171,69 @@ class Emo
      */
     private function encodeLink($matches)
     {
-        if (!$this->getOption('addrCount')) {
-            // Random generator seed
-            mt_srand((double)microtime() * 1000000);
-            // Make base 64 key
-            $this->options['tab'] = str_shuffle($this->getOption('tab'));
-            // Set counter and add base 64 key to array
-            $this->options['addrCount'] = 1;
-            $this->options['addrArray'][] = $this->getOption('tab');
+        if (Validator::endsWithTld($matches[1]) || (!empty($matches[2])) && Validator::endsWithTld($matches[2])) {
+            if (!$this->getOption('addrCount')) {
+                // Random generator seed
+                mt_srand((double)microtime() * 1000000);
+                // Make base 64 key
+                $this->options['tab'] = str_shuffle($this->getOption('tab'));
+                // Set counter and add base 64 key to array
+                $this->options['addrCount'] = 1;
+                $this->options['addrArray'][] = $this->getOption('tab');
+            }
+
+            // Link without a linktext: insert email address as text part
+            if (sizeof($matches) < 3) {
+                $matches[2] = $matches[1];
+            }
+
+            // rawurlencode/rawurldecode a possible subject/body
+            $matches[1] = preg_replace_callback(
+                '!(.*\?(subject|body)=)([^?]*)!iu',
+                function ($m) {
+                    return $m[1] . rawurldecode(rawurlencode($m[3]));
+                }, $matches[1]
+            );
+
+            // Extract existing classes
+            $classes = '';
+            if (preg_match('/<a[^>]+class=\"([^"]+)/iu', $matches[0], $class_match)) {
+                $classes = ' ' . $class_match[1];
+            }
+
+            // Create html of the true link
+            $trueLink = '<a class="emo_address' . $classes . '" href="mailto:' . $matches[1] . '">' .
+                htmlspecialchars_decode(htmlentities($matches[2], ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES) .
+                '</a>';
+
+            // Did we use the same link before?
+            $key = array_search($trueLink, $this->getOption('recentLinks'));
+
+            // Encrypt the complete link or use previously encrypted link
+            $crypted = ($key === false) ? $this->encodeBase64($trueLink) : $this->getOption('addrArray')[$key + 1];
+
+            // Add encrypted address to array
+            $this->options['addrArray'][] = $crypted;
+
+            // Create html of the fake link
+            $replaceLink = '<span id="_emoaddrId' . $this->options['addrCount'] . '"><span class="emo_address">' . $this->options['noScriptMessage'] . '</span></span>';
+
+            // Add link to recent links array
+            $this->options['recentLinks'][] = $trueLink;
+
+            // Debugging
+            if ($this->getOption('show_debug')) {
+                $this->options['debugString'] .= '  ' . $this->getOption('addrCount') . ' ' . $matches[0] . "\n" .
+                    '    ' . $matches[1] . "\n" .
+                    '    ' . $matches[2] . "\n" .
+                    '    ' . $crypted . "\n";
+            }
+
+            // Increase address counter
+            $this->options['addrCount']++;
+        } else {
+            return $matches[0];
         }
-
-        // Link without a linktext: insert email address as text part
-        if (sizeof($matches) < 3) {
-            $matches[2] = $matches[1];
-        }
-
-        // rawurlencode/rawurldecode a possible subject/body
-        $matches[1] = preg_replace_callback(
-            '!(.*\?(subject|body)=)([^?]*)!iu',
-            function ($m) {
-                return $m[1] . rawurldecode(rawurlencode($m[3]));
-            }, $matches[1]
-        );
-
-        // Extract existing classes
-        $classes = '';
-        if (preg_match('/<a[^>]+class=\"([^"]+)/iu', $matches[0], $class_match)) {
-            $classes = ' ' . $class_match[1];
-        }
-
-        // Create html of the true link
-        $trueLink = '<a class="emo_address' . $classes . '" href="mailto:' . $matches[1] . '">' .
-            htmlspecialchars_decode(htmlentities($matches[2], ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES) .
-            '</a>';
-
-        // Did we use the same link before?
-        $key = array_search($trueLink, $this->getOption('recentLinks'));
-
-        // Encrypt the complete link or use previously encrypted link
-        $crypted = ($key === false) ? $this->encodeBase64($trueLink) : $this->getOption('addrArray')[$key + 1];
-
-        // Add encrypted address to array
-        $this->options['addrArray'][] = $crypted;
-
-        // Create html of the fake link
-        $replaceLink = '<span id="_emoaddrId' . $this->options['addrCount'] . '"><span class="emo_address">' . $this->options['noScriptMessage'] . '</span></span>';
-
-        // Add link to recent links array
-        $this->options['recentLinks'][] = $trueLink;
-
-        // Debugging
-        if ($this->getOption('show_debug')) {
-            $this->options['debugString'] .= '  ' . $this->getOption('addrCount') . ' ' . $matches[0] . "\n" .
-                '    ' . $matches[1] . "\n" .
-                '    ' . $matches[2] . "\n" .
-                '    ' . $crypted . "\n";
-        }
-
-        // Increase address counter
-        $this->options['addrCount']++;
 
         return $replaceLink;
     }
@@ -286,7 +291,7 @@ class Emo
         if ($this->getOption('show_debug')) {
             $endtime = microtime(true);
             $totaltime = ($endtime - $starttime);
-            $this->options['debugString'] .= '  Email crypting took ' . round($totaltime, 4)  . ' seconds' . "\n\n" .
+            $this->options['debugString'] .= '  Email crypting took ' . round($totaltime, 4) . ' seconds' . "\n\n" .
                 '  ' . implode("\n  ", $this->getOption('recentLinks')) . "\n" .
                 '-->';
         }

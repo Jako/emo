@@ -17,7 +17,8 @@
   "require": {
     "php": ">=7.2.5",
     "ext-json": "*",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "arubacao/tld-checker": "^1.2"
   },
   "autoload": {
     "psr-4": {

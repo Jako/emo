@@ -22,3 +22,10 @@ For more information please read the documentation on https://jako.github.io/emo
 ## GitHub Repository
 
 https://github.com/Jako/emo
+
+
+## Third party licenses
+
+This extra includes third party software, for which we are thankful.
+
+* arubacao/tld-checker@1.2.252 [MIT]

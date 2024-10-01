@@ -3,7 +3,7 @@
   "lowCaseName": "emo",
   "description": "E-Mail Obfuscation with Javascript",
   "author": "Thomas Jakobi",
-  "version": "1.8.10",
+  "version": "1.9.0",
   "package": {
     "elements": {
       "chunks": [
@@ -89,11 +89,15 @@
     "readme": "docs/readme.md",
     "license": "docs/license.md",
     "changelog": "docs/changelog.md",
+    "options": {
+      "composer": true
+    },
     "setupOptions": {
       "source": "setup.options.php"
     },
     "resolver": {
       "after": [
+        "resolve.composer.php",
         "resolve.cleanup.php",
         "resolve.treehillstudio.php"
       ]

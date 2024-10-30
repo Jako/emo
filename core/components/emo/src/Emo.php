@@ -156,7 +156,7 @@ class Emo
                     $e4 = 64;
                 }
             }
-            $out .= $this->getOption('tab')[$e1] . $this->getOption('tab')[$e2] . $this->getOption('tab')[$e3] . $this->getOption('tab')[$e4];
+            $out .= ($this->getOption('tab')[$e1] ?? '') . ($this->getOption('tab')[$e2] ?? '') . ($this->getOption('tab')[$e3] ?? ''). ($this->getOption('tab')[$e4] ?? '');
         }
         return $out;
     }

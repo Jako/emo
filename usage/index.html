@@ -496,52 +496,72 @@ as well as <code>mailto:</code> strings and <code>@</code> characters from spamb
 <p>The plugin does not change addresses inside <code>&lt;form&gt;' tags. So submitted and not
 validated forms will not break. Sections between</code><!-- emo-exclude --><code>and</code><!-- /emo-exclude -->` are excluded from substitution.</p>
 <p>If the <code>No javascript</code> message contains a number, a link to a MODX resource with
-that ID is generated. For example, this could point to a resource with a contact
+that ID is generated. For example, this can point to a resource with a contact
 form.</p>
 <h2 id="system-settings">System Settings</h2>
 <p>emo uses the following system settings in the namespace <code>emo</code>:</p>
 <table>
 <thead>
 <tr>
-<th>Property</th>
+<th>Key</th>
+<th>Name</th>
 <th>Description</th>
 <th>Default</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>adresses_tpl</td>
-<td>Name of a chunk that contains the Javascript for the encrypted adresses at the end of the body.</td>
+<td>emo.adresses_tpl</td>
+<td>Adresses Chunk</td>
+<td>Name of a chunk that contains the Javascript for the encrypted addresses at the end of the body.</td>
 <td>tplEmoAdresses</td>
 </tr>
 <tr>
-<td>css_path</td>
+<td>emo.css_path</td>
 <td>Path to emo css</td>
-<td></td>
-</tr>
-<tr>
-<td>js_path</td>
-<td>Path to emo javascript</td>
-<td><code>/assets/components/emo/js/emo.min.js</code></td>
-</tr>
-<tr>
-<td>no_script_message</td>
-<td>'No javascript' message (Resource ID for internal link)</td>
-<td>Turn on JavaScript!</td>
-</tr>
-<tr>
-<td>selection_range</td>
-<td>Comma separated list of enabled/disabled resource IDs for emo</td>
-<td></td>
-</tr>
-<tr>
-<td>selection_type</td>
-<td>Selection type for enabled/disabled resources for emo</td>
+<td>If this setting is set, a link to this css path is inserted at the end of the head area of the html code of the current resource.</td>
 <td>-</td>
 </tr>
 <tr>
-<td>tpl_only</td>
-<td>Don't work on resources with blank template</td>
+<td>emo.debug</td>
+<td>Debug</td>
+<td>Display debug information.</td>
+<td>No</td>
+</tr>
+<tr>
+<td>emo.include_scripts</td>
+<td>Include emo javascript</td>
+<td>If this setting is set, a link to this js path is inserted at the end of the body section.</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>emo.js_path</td>
+<td>Path to emo javascript</td>
+<td>With this setting a different location of the emo javascript than {assets_url}components/emo/js/emo.min.js can be provided.</td>
+<td>-</td>
+</tr>
+<tr>
+<td>emo.no_script_message</td>
+<td>‘No javascript’ message (Resource ID for internal link)</td>
+<td>All email addresses in the current document were replaced with the text in this setting. If the text is numeric, a link to the resource with that ID and the pagetitle of that resource is generated.</td>
+<td>-</td>
+</tr>
+<tr>
+<td>emo.selection_range</td>
+<td>Comma separated list of enabled/disabled resource IDs for emo</td>
+<td>Insert a comma list with resource IDs, the plugin should (not) work on.</td>
+<td>-</td>
+</tr>
+<tr>
+<td>emo.selection_type</td>
+<td>Selection type for enabled/disabled resources for emo</td>
+<td>If only some resources should worked by the plugin, change the value of this setting to <code>include</code>.</td>
+<td>exclude</td>
+</tr>
+<tr>
+<td>emo.tpl_only</td>
+<td>Don’t work on resources with blank template</td>
+<td>Enable this, if the plugin should work on resources with the <code>(blank)</code> template.</td>
 <td>Yes</td>
 </tr>
 </tbody>

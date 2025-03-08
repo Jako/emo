@@ -23,27 +23,28 @@ validated forms will not break. Sections between `<!-- emo-exclude -->` and
 `<!-- /emo-exclude -->` are excluded from substitution.
 
 If the `No javascript` message contains a number, a link to a MODX resource with
-that ID is generated. For example, this could point to a resource with a contact
+that ID is generated. For example, this can point to a resource with a contact
 form.
 
 ## System Settings
 
 emo uses the following system settings in the namespace `emo`:
-   
-| Property          | Description                                                                                     | Default                                |
-|-------------------|-------------------------------------------------------------------------------------------------|----------------------------------------|
-| adresses_tpl      | Name of a chunk that contains the Javascript for the encrypted adresses at the end of the body. | tplEmoAdresses                         |
-| css_path          | Path to emo css                                                                                 |                                        |
-| js_path           | Path to emo javascript                                                                          | `/assets/components/emo/js/emo.min.js` |
-| no_script_message | 'No javascript' message (Resource ID for internal link)                                         | Turn on JavaScript!                    |
-| selection_range   | Comma separated list of enabled/disabled resource IDs for emo                                   |                                        |
-| selection_type    | Selection type for enabled/disabled resources for emo                                           | -                                      |
-| tpl_only          | Don't work on resources with blank template                                                     | Yes                                    |
+
+| Key                   | Name                                                          | Description                                                                                                                                                                                           | Default        |
+|-----------------------|---------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|
+| emo.adresses_tpl      | Adresses Chunk                                                | Name of a chunk that contains the Javascript for the encrypted addresses at the end of the body.                                                                                                      | tplEmoAdresses |
+| emo.css_path          | Path to emo css                                               | If this setting is set, a link to this css path is inserted at the end of the head area of the html code of the current resource.                                                                     | -              |
+| emo.debug             | Debug                                                         | Display debug information.                                                                                                                                                                            | No             |
+| emo.include_scripts   | Include emo javascript                                        | If this setting is set, a link to this js path is inserted at the end of the body section.                                                                                                            | Yes            |
+| emo.js_path           | Path to emo javascript                                        | With this setting a different location of the emo javascript than {assets_url}components/emo/js/emo.min.js can be provided.                                                                         | -              |
+| emo.no_script_message | ‘No javascript’ message (Resource ID for internal link)       | All email addresses in the current document were replaced with the text in this setting. If the text is numeric, a link to the resource with that ID and the pagetitle of that resource is generated. | -              |
+| emo.selection_range   | Comma separated list of enabled/disabled resource IDs for emo | Insert a comma list with resource IDs, the plugin should (not) work on.                                                                                                                               | -              |
+| emo.selection_type    | Selection type for enabled/disabled resources for emo         | If only some resources should worked by the plugin, change the value of this setting to `include`.                                                                                                    | exclude        |
+| emo.tpl_only          | Don’t work on resources with blank template                   | Enable this, if the plugin should work on resources with the `(blank)` template.                                                                                                                      | Yes            |
 
 ## Output issues
 
 Please make sure that the HTML output of MODX uses only UTF-8 characters.
 Otherwise, the output may break and display a blank page. This can happen if a
 non-UTF-8 locale is set in the MODX system preferences and a date modifier is
-used. Also, the UTF-8 characters must be [precomposed]
-(https://en.wikipedia.org/wiki/Precomposed_character).
+used. Also, the UTF-8 characters must be [precomposed](https://en.wikipedia.org/wiki/Precomposed_character).

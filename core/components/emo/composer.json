@@ -1,6 +1,7 @@
 {
   "name": "treehillstudio/emo",
   "description": "E-Mail Obfuscation with Javascript",
+  "version": "1.9.1",
   "authors": [
     {
       "name": "Thomas Jakobi",

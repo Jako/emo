@@ -8,7 +8,7 @@
 $_lang['setting_emo.css_path'] = 'Pfad zum emo-CSS';
 $_lang['setting_emo.css_path_desc'] = 'Wenn diese Einstellung gesetzt ist, wird am Ende des Head-Bereichs ein Link zu dieser CSS-Datei eingefügt.';
 $_lang['setting_emo.debug'] = 'Debug';
-$_lang['setting_emo.debug_desc'] = 'Debug-Informationen anzeigen.';
+$_lang['setting_emo.debug_desc'] = 'Debug-Informationen im MODX Fehlerprotokoll ausgeben.';
 $_lang['setting_emo.include_scripts'] = 'emo-Javascript einbinden';
 $_lang['setting_emo.include_scripts_desc'] = 'Wenn diese Einstellung gesetzt ist, wird am Ende des Body-Abschnitts ein Link zu dieser js-Datei eingefügt.';
 $_lang['setting_emo.js_path'] = 'Pfad zum emo-Javascript';

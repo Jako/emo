@@ -18,7 +18,7 @@ instead of an outdated and overused hack like hexadecimal or unicode encoding
 (not encryption) of email addresses. It also hides all traces of href attributes
 as well as `mailto:` strings and `@` characters from spambots.
 
-The plugin does not change addresses inside `<form>' tags. So submitted and not
+The plugin does not change addresses inside `<form>` tags. So submitted and not
 validated forms will not break. Sections between `<!-- emo-exclude -->` and
 `<!-- /emo-exclude -->` are excluded from substitution.
 

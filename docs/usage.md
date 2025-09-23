@@ -19,8 +19,8 @@ instead of an outdated and overused hack like hexadecimal or unicode encoding
 as well as `mailto:` strings and `@` characters from spambots.
 
 The plugin does not change addresses inside `<form>' tags. So submitted and not
-validated forms will not break. Sections between `<!-- emo-exclude -->` and
-`<!-- /emo-exclude -->` are excluded from substitution.
+validated forms will not break. Sections between `&lt;!-- emo-exclude --&gt;` and
+`&lt;!-- /emo-exclude --&gt;` are excluded from substitution.
 
 If the `No javascript` message contains a number, a link to a MODX resource with
 that ID is generated. For example, this can point to a resource with a contact

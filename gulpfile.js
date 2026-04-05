@@ -41,7 +41,7 @@ const scriptsWeb = function () {
         .pipe(concat('emo.min.js'))
         .pipe(uglify())
         .pipe(header(banner + '\n', {pkg: pkg}))
-        .pipe(gulp.dest('assets/components/emo/js/'))
+        .pipe(gulp.dest('assets/components/emo/js/'));
 };
 gulp.task('scripts', gulp.series(scriptsWeb));
 
@@ -68,7 +68,7 @@ const sassWeb = function () {
             suffix: '.min'
         }))
         .pipe(footer('\n' + banner, {pkg: pkg}))
-        .pipe(gulp.dest('assets/components/emo/css/'))
+        .pipe(gulp.dest('assets/components/emo/css/'));
 };
 gulp.task('sass', gulp.series(sassWeb));
 
@@ -89,7 +89,7 @@ const bumpVersion = function () {
 };
 const bumpDocs = function () {
     return gulp.src([
-        'mkdocs.yml',
+        'zensical.toml',
     ], {base: './'})
         .pipe(replace(/&copy; 2011(-\d{4})?/g, '&copy; ' + (year > 2011 ? '2011-' : '') + year))
         .pipe(gulp.dest('.'));

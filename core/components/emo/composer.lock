@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81f340e481e7b96d697e274a123c1707",
+    "content-hash": "3e6599a39c2ec51becc3f8e28457b156",
     "packages": [
         {
             "name": "arubacao/tld-checker",
-            "version": "1.2.276",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/arubacao/tld-checker.git",
-                "reference": "0429ad6bb555600b98ccd1a8bba3ef6691fb02b0"
+                "reference": "a427dc100cc4a9e6cb062ad7723190a5349fcc49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arubacao/tld-checker/zipball/0429ad6bb555600b98ccd1a8bba3ef6691fb02b0",
-                "reference": "0429ad6bb555600b98ccd1a8bba3ef6691fb02b0",
+                "url": "https://api.github.com/repos/arubacao/tld-checker/zipball/a427dc100cc4a9e6cb062ad7723190a5349fcc49",
+                "reference": "a427dc100cc4a9e6cb062ad7723190a5349fcc49",
                 "shasum": ""
             },
             "require": {
@@ -25,7 +25,7 @@
                 "php": "^7.0|^8.0"
             },
             "require-dev": {
-                "orchestra/testbench": "~3.0|^4.0|^5.0|^6.0",
+                "orchestra/testbench": "~3.0|^4.0|^5.0|^6.0|^7.0",
                 "phpunit/phpunit": "~4.8.36 || >=5.7.21"
             },
             "suggest": {
@@ -65,15 +65,15 @@
             ],
             "support": {
                 "issues": "https://github.com/arubacao/tld-checker/issues",
-                "source": "https://github.com/arubacao/tld-checker/tree/1.2.276"
+                "source": "https://github.com/arubacao/tld-checker/tree/1.3.0"
             },
-            "time": "2025-03-16T04:01:19+00:00"
+            "time": "2026-05-26T09:53:29+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -81,9 +81,9 @@
         "ext-json": "*",
         "ext-curl": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "7.2.5"
     },
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.9.0"
 }

@@ -3,7 +3,7 @@
  * emo
  *
  * Copyright 2008-2011 by Florian Wobbe - www.eprofs.de
- * Copyright 2011-2024 by Thomas Jakobi <office@treehillstudio.com>
+ * Copyright 2011-2026 by Thomas Jakobi <office@treehillstudio.com>
  *
  * @package emo
  * @subpackage classfile
@@ -42,7 +42,7 @@ class Emo
      * The version
      * @var string $version
      */
-    public $version = '1.9.1';
+    public $version = '1.9.2';
 
     /**
      * The class options

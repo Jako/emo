@@ -20,7 +20,7 @@ class emoTestCase extends \PHPUnit\Framework\TestCase
     /**
      * Ensure all tests have a reference to the MODX and Quip objects
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->modx = emoTestHarness::_getConnection();
 
@@ -39,7 +39,7 @@ class emoTestCase extends \PHPUnit\Framework\TestCase
     /**
      * Remove reference at end of test case
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->modx = null;
         $this->emo = null;

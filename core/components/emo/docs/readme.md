@@ -28,4 +28,4 @@ https://github.com/Jako/emo
 
 This extra includes third party software, for which we are thankful.
 
-* arubacao/tld-checker@1.2.252 [MIT]
+* arubacao/tld-checker@1.3.0 [MIT]

@@ -5,4 +5,5 @@
  * @package emo
  * @subpackage lexicon
  */
+
 $_lang['emo.no_script_message'] = 'Bitte Javascript aktivieren!';

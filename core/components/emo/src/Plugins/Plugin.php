@@ -57,11 +57,11 @@ abstract class Plugin
      *
      * @return bool
      */
-    public function init()
+    public function init(): bool
     {
         // Get selection range and selection type system settings
-        $tplOnly = (bool)$this->emo->getOption('tpl_only', null, true);
-        $selectionType = $this->emo->getOption('selection_type', null, 'exclude');
+        $tplOnly = (bool)$this->emo->getOption('tpl_only', [], true);
+        $selectionType = $this->emo->getOption('selection_type', [], 'exclude');
         $selectionRange = $this->emo->getOption('selection_range');
 
         // Stop plugin on selection range and selection type

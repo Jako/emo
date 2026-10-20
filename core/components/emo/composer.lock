@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e6599a39c2ec51becc3f8e28457b156",
+    "content-hash": "bc6b5f23be9538f66a88101df05aecd2",
     "packages": [
         {
             "name": "arubacao/tld-checker",
@@ -77,13 +77,13 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2.5",
+        "php": ">=7.2",
         "ext-json": "*",
         "ext-curl": "*"
     },
     "platform-dev": {},
     "platform-overrides": {
-        "php": "7.2.5"
+        "php": "7.2"
     },
     "plugin-api-version": "2.9.0"
 }

@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.3] - 2026-10-20
+
+### Changed
+
+- Remove NUL characters from the decoded output
+- Return an error message instead of throwing an error for an invalid address index
+- Call emo_replace directly in the tplEmoAdresses chunk instead of passing its return value to addLoadEvent (Please update custom copies of the tplEmoAdresses chunk to call `emo_replace();` directly)
+
+### Fixed
+
+- Normalize UTF-8 decomposed to precomposed characters to avoid blank pages in the output. Fixes issues [#22](https://github.com/Jako/emo/issues/22) and [#31](https://github.com/Jako/emo/issues/31). 
+- Fix decoding of non-ASCII characters in email addresses, subjects and link texts
+
 ## [1.9.2] - 2026-08-03
 
 ### Changed

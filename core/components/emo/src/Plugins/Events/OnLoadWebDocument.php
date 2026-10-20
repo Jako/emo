@@ -17,8 +17,8 @@ class OnLoadWebDocument extends Plugin
         $jsUrl = ($jsUrl) ?: $assetsUrl . 'js/emo.min.js';
         $cssUrl = $this->emo->getOption('css_path');
 
-        if ($this->emo->getOption('include_scripts', null, true)) {
-            if ($this->emo->getOption('debug', null, false) && $assetsUrl != MODX_ASSETS_URL . 'components/emo/') {
+        if ($this->emo->getOption('include_scripts', [], true)) {
+            if ($this->emo->getOption('debug', [], false) && $assetsUrl != MODX_ASSETS_URL . 'components/emo/') {
                 $this->modx->regClientScript($assetsUrl . '../../../source/js/emo.js?v=' . $this->emo->version);
             } else {
                 $this->modx->regClientScript($jsUrl . '?v=' . $this->emo->version);

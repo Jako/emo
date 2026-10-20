@@ -21,7 +21,7 @@ class OnWebPagePrerender extends Plugin
         }
 
         $this->emo->options['noScriptMessage'] = $noScriptMessage;
-        $this->emo->options['show_debug'] = $this->emo->getOption('debug', null, false);
+        $this->emo->options['show_debug'] = $this->emo->getOption('debug', [], false);
         $this->modx->resource->_output = $this->emo->obfuscateEmail($this->modx->resource->_output);
 
         $script = $this->emo->options['addrJs'] . $this->emo->options['debugString'];

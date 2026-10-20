@@ -13,6 +13,7 @@ namespace TreehillStudio\Emo;
 
 use Arubacao\TldChecker\Validator;
 use modX;
+use Normalizer;
 use xPDO;
 
 /**
@@ -20,6 +21,22 @@ use xPDO;
  */
 class Emo
 {
+    /**
+     * The characters of the custom base 64 key
+     */
+    private const TAB = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+.';
+
+    /**
+     * The characters of the standard base 64 encoding
+     */
+    private const BASE64_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+
+    /**
+     * The markers of an excluded content part
+     */
+    private const EXCLUDE_START = '<!-- emo-exclude -->';
+    private const EXCLUDE_END = '<!-- /emo-exclude -->';
+
     /**
      * A reference to the modX instance
      * @var modX $modx
@@ -42,7 +59,7 @@ class Emo
      * The version
      * @var string $version
      */
-    public $version = '1.9.2';
+    public $version = '1.9.3';
 
     /**
      * The class options
@@ -56,7 +73,7 @@ class Emo
      * @param modX $modx A reference to the modX instance.
      * @param array $options An array of options. Optional.
      */
-    public function __construct(modX &$modx, $options = [])
+    public function __construct(modX &$modx, array $options = [])
     {
         $this->modx =& $modx;
 
@@ -91,8 +108,10 @@ class Emo
             'noScriptMessage' => $this->modx->getOption($this->namespace . '.noScriptMessage', $options, 'Turn on Javascript!'),
             'show_debug' => (bool)$this->modx->getOption($this->namespace . '.show_debug', $options, false),
             'adresses_tpl' => $this->modx->getOption($this->namespace . '.adresses_tpl', $options, 'tplEmoAdresses'),
-            'tab' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+.',
+            'tab' => self::TAB,
             'addrCount' => 0,
+            'addrArray' => [],
+            'addrJs' => '',
             'debugString' => '',
             'recentLinks' => []
         ]);
@@ -110,10 +129,10 @@ class Emo
      * namespaced system setting; by default this value is null.
      * @return mixed The option value or the default value specified.
      */
-    public function getOption($key, $options = [], $default = null)
+    public function getOption(string $key, array $options = [], $default = null)
     {
         $option = $default;
-        if (!empty($key) && is_string($key)) {
+        if (!empty($key)) {
             if ($options != null && array_key_exists($key, $options)) {
                 $option = $options[$key];
             } elseif (array_key_exists($key, $this->options)) {
@@ -126,172 +145,152 @@ class Emo
     }
 
     /**
-     * Custom base 64 encoding
-     * Original emo code by Florian Wobbe - www.eprofs.de
+     * Base 64 encoding with the shuffled custom alphabet and without padding
      *
      * @param string $data String to encode.
      * @return string Encoded data
      */
-    private function encodeBase64($data)
+    private function encodeBase64(string $data): string
     {
-        $out = '';
-        for ($i = 0; $i < strlen($data);) {
-            $c1 = ord($data[$i++]);
-            $c2 = $c3 = null;
-            if ($i < strlen($data)) {
-                $c2 = ord($data[$i++]);
-            }
-            if ($i < strlen($data)) {
-                $c3 = ord($data[$i++]);
-            }
-            $e1 = $c1 >> 2;
-            $e2 = (($c1 & 3) << 4) + ($c2 >> 4);
-            $e3 = (($c2 & 15) << 2) + ($c3 >> 6);
-            $e4 = $c3 & 63;
-            if (is_null($c2) || is_nan($c2)) {
-                $e3 = $e4 = 64;
-            } else {
-                if (is_null($c3) || is_nan($c3)) {
-                    $e4 = 64;
-                }
-            }
-            $out .= ($this->getOption('tab')[$e1] ?? '') . ($this->getOption('tab')[$e2] ?? '') . ($this->getOption('tab')[$e3] ?? ''). ($this->getOption('tab')[$e4] ?? '');
-        }
-        return $out;
+        return strtr(rtrim(base64_encode($data), '='), self::BASE64_ALPHABET, $this->options['tab']);
     }
 
     /**
      * Encrypt the match or generate a link when linktext is missing
      * Modified original emo code by Florian Wobbe - www.eprofs.de
      *
-     * @access public
-     * @param array $matches String to encode.
-     * @return string Encoded data
+     * @param array $matches The regular expression matches.
+     * @return string The replacement for the match
      */
-    private function encodeLink($matches)
+    private function encodeLink(array $matches): string
     {
-        if (Validator::endsWithTld($matches[1]) || (!empty($matches[2])) && Validator::endsWithTld($matches[2])) {
-            if (!$this->getOption('addrCount')) {
-                // Random generator seed
-                mt_srand((double)microtime() * 1000000);
-                // Make base 64 key
-                $this->options['tab'] = str_shuffle($this->getOption('tab'));
-                // Set counter and add base 64 key to array
-                $this->options['addrCount'] = 1;
-                $this->options['addrArray'][] = $this->getOption('tab');
-            }
-
-            // Link without a linktext: insert email address as text part
-            if (sizeof($matches) < 3) {
-                $matches[2] = $matches[1];
-            }
-
-            // rawurlencode/rawurldecode a possible subject/body
-            $matches[1] = preg_replace_callback(
-                '!(.*\?(subject|body)=)([^?]*)!iu',
-                function ($m) {
-                    return $m[1] . rawurldecode(rawurlencode($m[3]));
-                }, $matches[1]
-            );
-
-            // Extract existing classes
-            $classes = '';
-            if (preg_match('/<a[^>]+class=\"([^"]+)/iu', $matches[0], $class_match)) {
-                $classes = ' ' . $class_match[1];
-            }
-
-            // Create html of the true link
-            $trueLink = '<a class="emo_address' . $classes . '" href="mailto:' . $matches[1] . '">' .
-                htmlspecialchars_decode(htmlentities($matches[2], ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES) .
-                '</a>';
-
-            // Did we use the same link before?
-            $key = array_search($trueLink, $this->getOption('recentLinks'));
-
-            // Encrypt the complete link or use previously encrypted link
-            $crypted = ($key === false) ? $this->encodeBase64($trueLink) : $this->getOption('addrArray')[$key + 1];
-
-            // Add encrypted address to array
-            $this->options['addrArray'][] = $crypted;
-
-            // Create html of the fake link
-            $replaceLink = '<span id="_emoaddrId' . $this->options['addrCount'] . '"><span class="emo_address">' . $this->options['noScriptMessage'] . '</span></span>';
-
-            // Add link to recent links array
-            $this->options['recentLinks'][] = $trueLink;
-
-            // Debugging
-            if ($this->getOption('show_debug')) {
-                $this->options['debugString'] .= '  ' . $this->getOption('addrCount') . ' ' . $matches[0] . "\n" .
-                    '    ' . $matches[1] . "\n" .
-                    '    ' . $matches[2] . "\n" .
-                    '    ' . $crypted . "\n";
-            }
-
-            // Increase address counter
-            $this->options['addrCount']++;
-        } else {
+        $isEmail = Validator::endsWithTld($matches[1]) || (!empty($matches[2]) && Validator::endsWithTld($matches[2]));
+        if (!$isEmail) {
             return $matches[0];
         }
 
-        return $replaceLink;
+        if (!$this->options['addrCount']) {
+            // Make base 64 key, set counter and add base 64 key to array in the first run
+            $this->options['tab'] = str_shuffle(self::TAB);
+            $this->options['addrCount'] = 1;
+            $this->options['addrArray'][] = $this->options['tab'];
+        }
+
+        // Link without a linktext: insert email address as text part
+        $address = $matches[1];
+        $text = $matches[2] ?? $address;
+
+        // Extract existing classes
+        $classes = '';
+        if (preg_match('/<a[^>]+class="([^"]+)/iu', $matches[0], $classMatch)) {
+            $classes = ' ' . $classMatch[1];
+        }
+
+        // Create html of the true link
+        $trueLink = '<a class="emo_address' . $classes . '" href="mailto:' . $address . '">' .
+            htmlspecialchars_decode(htmlentities($text, ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES) .
+            '</a>';
+
+        // Encrypt the complete link or use previously encrypted link (the first entry in addrArray is the key)
+        $key = array_search($trueLink, $this->options['recentLinks']);
+        $crypted = ($key === false) ? $this->encodeBase64($trueLink) : $this->options['addrArray'][$key + 1];
+
+        $this->options['addrArray'][] = $crypted;
+        $this->options['recentLinks'][] = $trueLink;
+
+        // Debugging
+        if ($this->options['show_debug']) {
+            $this->options['debugString'] .= '  ' . $this->options['addrCount'] . ' ' . $matches[0] . "\n" .
+                '    ' . $address . "\n" .
+                '    ' . $text . "\n" .
+                '    ' . $crypted . "\n";
+        }
+
+        // Create html of the fake link and increase address counter
+        return '<span id="_emoaddrId' . $this->options['addrCount']++ . '"><span class="emo_address">' . $this->options['noScriptMessage'] . '</span></span>';
     }
 
     /**
-     * Replace the found email strings and generate the javascript
+     * Replace the email strings in a content part
+     *
+     * @param string $part The content part.
+     * @return string The content part with encrypted emails
+     */
+    private function encodePart(string $part): string
+    {
+        $patterns = [
+            '#<a[^>]*mailto:([^\'"]+)[\'"][^>]*>(.*?)</a>#ius',
+            '#([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})#iu'
+        ];
+        $result = $part;
+        foreach ($patterns as $pattern) {
+            $result = preg_replace_callback($pattern, [$this, 'encodeLink'], $result);
+            if (preg_last_error()) {
+                $result = $part;
+                $this->modx->log(xPDO::LOG_LEVEL_ERROR, 'The rendered resource content contains invalid characters.', '', 'obfuscateEmail');
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Replace the found email strings and generate the JavaScript
      * Modified original emo code by Florian Wobbe - www.eprofs.de
      *
-     * @access public
      * @param string $content String to encode.
      * @return string Encoded data
      */
-    public function obfuscateEmail($content)
+    public function obfuscateEmail(string $content): string
     {
+        $debug = $this->options['show_debug'];
+
+        $this->options['tab'] = self::TAB;
+        $this->options['addrCount'] = 0;
         $this->options['addrArray'] = [];
+        $this->options['recentLinks'] = [];
+
+        if (class_exists(Normalizer::class, false)) {
+            $normalized = Normalizer::normalize($content, Normalizer::FORM_C);
+            if ($normalized !== false) {
+                $content = $normalized;
+            } else {
+                if ($debug) {
+                    $this->modx->log(xPDO::LOG_LEVEL_ERROR, 'The content contains malformed UTF-8 code');
+                }
+                return $content;
+            }
+        } else {
+            if ($debug) {
+                $this->modx->log(xPDO::LOG_LEVEL_ERROR, 'The Normalizer class was not found and the content can create a blank page if malformed UTF-8 code occurs.');
+            }
+        }
 
         // Debugging
-        if ($this->getOption('show_debug')) {
+        if ($debug) {
             $this->options['debugString'] = "\n" . '<!-- Emo debugging' . "\n";
             $starttime = microtime(true);
         }
 
-        // exclude form and emo-exclude tags
-        $splitEx = "#((?:<form|<!-- emo-exclude -->).*?(?:</form>|<!-- /emo-exclude -->))#ius";
+        // Exclude form and emo-exclude tags
+        $splitEx = '#((?:<form|' . self::EXCLUDE_START . ').*?(?:</form>|' . self::EXCLUDE_END . '))#ius';
         $parts = preg_split($splitEx, $content, -1, PREG_SPLIT_DELIM_CAPTURE);
         $output = '';
         foreach ($parts as $part) {
-            $result = $part;
-            if (substr($part, 0, strlen('<form')) != '<form' && substr($part, 0, strlen('<!-- emo-exclude -->')) != '<!-- emo-exclude -->') {
-                $result = preg_replace_callback('#<a[^>]*mailto:([^\'"]+)[\'"][^>]*>(.*?)</a>#ius', [
-                    $this, 'encodeLink'
-                ], $part);
-                if (preg_last_error()) {
-                    $result = $part;
-                    $this->modx->log(xPDO::LOG_LEVEL_ERROR, 'The rendered resource content contains invalid characters.', '', 'obfuscateEmail');
-                }
-                $result = preg_replace_callback('#([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})#iu', [
-                    $this, 'encodeLink'
-                ], $result);
-                if (preg_last_error()) {
-                    $result = $part;
-                    $this->modx->log(xPDO::LOG_LEVEL_ERROR, 'The rendered resource content contains invalid characters: ', '', 'obfuscateEmail');
-                }
-            }
-            $output .= $result;
+            $excluded = strpos($part, '<form') === 0 || strpos($part, self::EXCLUDE_START) === 0;
+            $output .= $excluded ? $part : $this->encodePart($part);
         }
-        $output = str_replace(['<!-- emo-exclude -->', '<!-- /emo-exclude -->'], '', $output);
+        $output = str_replace([self::EXCLUDE_START, self::EXCLUDE_END], '', $output);
 
         // Script block
-        $this->options['addrJs'] = "\n" . $this->modx->getChunk($this->getOption('adresses_tpl'), [
-                'addr_array' => json_encode($this->getOption('addrArray'))
+        $this->options['addrJs'] = "\n" . $this->modx->getChunk($this->options['adresses_tpl'], [
+                'addr_array' => json_encode($this->options['addrArray'])
             ]);
 
         // Debugging
-        if ($this->getOption('show_debug')) {
-            $endtime = microtime(true);
-            $totaltime = ($endtime - $starttime);
+        if ($debug) {
+            $totaltime = microtime(true) - $starttime;
             $this->options['debugString'] .= '  Email crypting took ' . round($totaltime, 4) . ' seconds' . "\n\n" .
-                '  ' . implode("\n  ", $this->getOption('recentLinks')) . "\n" .
+                '  ' . implode("\n  ", $this->options['recentLinks']) . "\n" .
                 '-->';
         }
         return $output;
